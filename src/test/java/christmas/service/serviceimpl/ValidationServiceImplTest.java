@@ -139,8 +139,8 @@ class ValidationServiceImplTest {
 
         try {
             String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
-            for(String MenuAndQuantity:reservationMenuAndQuantityCommaSplit){
-                String[] split = MenuAndQuantity.split("-");
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] split = menuAndQuantity.split("-");
                 Integer.parseInt(split[1]);
             }
             result = true;
@@ -159,9 +159,9 @@ class ValidationServiceImplTest {
 
         try {
             String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
-            for(String MenuAndQuantity:reservationMenuAndQuantityCommaSplit){
-                String[] split = MenuAndQuantity.split("-");
-                Integer.parseInt(split[1]);
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+                Integer.parseInt(menuAndQuantityHyphenSplit[1]);
             }
             result = true;
         }catch (Exception e){
@@ -175,18 +175,48 @@ class ValidationServiceImplTest {
     @ParameterizedTest
     @ValueSource(strings = {"해산물파스타-1", "해산물파스타-2,레드와인-1,초코케이크-1"})
     @DisplayName("입력 값의 메뉴의 개수가 숫자가아니면 예외를 반환한다.")
-    void isRangeQuantity(String reservationMenuAndQuantity) {
+    void isRangeQuantity_정상케이스(String reservationMenuAndQuantity) {
         Object result;
 
         try {
             String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
-            for(String MenuAndQuantity:reservationMenuAndQuantityCommaSplit){
-                String[] split = MenuAndQuantity.split("-");
-                Integer.parseInt(split[1]);
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+                int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
+
+                if(quantity<1 || quantity>20){
+                    throw new IllegalArgumentException();
+                }
             }
             result = true;
         }catch (Exception e){
             result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
         }
+
+        assertThat(result).isEqualTo(true);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"해산물파스타-0", "해산물파스타-21,레드와인-1,초코케이크-1"})
+    @DisplayName("입력 값의 메뉴의 개수가 숫자가아니면 예외를 반환한다.")
+    void isRangeQuantity_예외케이스(String reservationMenuAndQuantity) {
+        Object result;
+
+        try {
+            String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+                int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
+
+                if(quantity<1 || quantity>20){
+                    throw new IllegalArgumentException();
+                }
+            }
+            result = true;
+        }catch (Exception e){
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
+        }
+
+        assertThat(result).isInstanceOf(IllegalArgumentException.class);
     }
 }
