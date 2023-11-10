@@ -23,5 +23,12 @@ public class ValidationServiceImpl implements ValidationService {
             throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
         }
     }
+
+    private boolean isRangeReservationDate(int reservationDate,int start,int end){
+        if(start <= reservationDate || end >= reservationDate){
+            return true;
+        }
+        throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
+    }
 }
 
