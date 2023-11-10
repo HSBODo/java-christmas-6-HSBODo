@@ -3,6 +3,9 @@ package christmas.service.serviceimpl;
 import christmas.constant.ChristmasPromotionException;
 import christmas.service.ValidationService;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public class ValidationServiceImpl implements ValidationService {
     private final int RESERVATION_DATE_RANGE_START = 1;
     private final int RESERVATION_DATE_RANGE_END = 31;
@@ -38,6 +41,18 @@ public class ValidationServiceImpl implements ValidationService {
             return true;
         }
         throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
+    }
+
+    private boolean isFormat(String reservationMenuAndQuantity){
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+
+        Stream<String> reservationMenuAndQuantityStream = Arrays.stream(reservationMenuAndQuantityCommaSplit).
+                filter(s -> s.contains("-"));
+        if(reservationMenuAndQuantityCommaSplit.length==reservationMenuAndQuantityStream.count()){
+            return true;
+        }
+
+        throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_FORMAT.getMessage());
     }
 }
 
