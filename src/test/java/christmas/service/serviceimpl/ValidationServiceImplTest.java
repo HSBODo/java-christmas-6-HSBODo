@@ -134,7 +134,7 @@ class ValidationServiceImplTest {
     @ParameterizedTest
     @ValueSource(strings = {"해산물파스타-0", "해산물파스타-2,레드와인-1,초코케이크-1"})
     @DisplayName("입력 값의 메뉴의 개수가 숫자이면 true를 반환한다.")
-    void isValidQuantity_정상케이스(String reservationMenuAndQuantity) {
+    void isDigitQuantity_정상케이스(String reservationMenuAndQuantity) {
         Object result;
 
         try {
@@ -154,7 +154,7 @@ class ValidationServiceImplTest {
     @ParameterizedTest
     @ValueSource(strings = {"해산물파스타-삼", "해산물파스타-사,레드와인-일,초코케이크-a"})
     @DisplayName("입력 값의 메뉴의 개수가 숫자가아니면 예외를 반환한다.")
-    void isValidQuantity_예외케이스(String reservationMenuAndQuantity) {
+    void isDigitQuantity_예외케이스(String reservationMenuAndQuantity) {
         Object result;
 
         try {
@@ -176,6 +176,17 @@ class ValidationServiceImplTest {
     @ValueSource(strings = {"해산물파스타-1", "해산물파스타-2,레드와인-1,초코케이크-1"})
     @DisplayName("입력 값의 메뉴의 개수가 숫자가아니면 예외를 반환한다.")
     void isRangeQuantity(String reservationMenuAndQuantity) {
+        Object result;
 
+        try {
+            String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+            for(String MenuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] split = MenuAndQuantity.split("-");
+                Integer.parseInt(split[1]);
+            }
+            result = true;
+        }catch (Exception e){
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
+        }
     }
 }
