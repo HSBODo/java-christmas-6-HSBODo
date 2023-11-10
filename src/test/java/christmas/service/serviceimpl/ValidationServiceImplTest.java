@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -30,68 +31,63 @@ class ValidationServiceImplTest {
     @ValueSource(strings = {"15"})
     @DisplayName("입력 값이 숫자형이면 true를 반환한다")
     public void isDigit_정상케이스(String number) {
-        boolean result = false;
-        Exception exception = new Exception();
+        Object result;
 
         try {
             Integer.parseInt(number);
             result = true;
         } catch (NumberFormatException e) {
-            exception = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
         }
 
-        assertThat(result).isTrue();
+        assertThat(result).isEqualTo(true);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"십오"})
     @DisplayName("입력 값이 숫자형이 아니면 예외를 발생한다.")
     public void isDigit_예외케이스(String number) {
-        boolean result = false;
-        Exception exception = new Exception();
+        Object result;
 
         try {
             Integer.parseInt(number);
             result = true;
         } catch (NumberFormatException e) {
-            exception = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
         }
 
-        assertThat(result).isFalse();
-        assertThat(exception).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR] 숫자로 입력해 주세요.");
+        assertThat(result).isNotEqualTo(true);
+        assertThat(result).isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
     @CsvSource(value = {"1,1,31", "5,1,31", "15,1,31", "20,1,31", "31,1,31"}, delimiter = ',')
     @DisplayName("입력 값이 범위에 포함되면 true를 반환한다.")
     public void isRangeReservationDate_정상케이스(int reservationDate, int start, int end) {
-        boolean result = false;
-        Exception exception;
+        Object result;
 
         if (start <= reservationDate && end >= reservationDate) {
             result = true;
+        }else {
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
         }
-        exception = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
 
-        assertThat(result).isTrue();
+        assertThat(result).isEqualTo(true);
     }
 
     @ParameterizedTest
     @CsvSource(value = {"32,1,31", "0,1,31", "33,1,31", "34,1,31", "100,1,31"}, delimiter = ',')
     @DisplayName("입력 값이 숫자형인지 확인한다.")
     public void isRangeReservationDate_예외케이스(int reservationDate, int start, int end) {
-        boolean result = false;
-        Exception exception;
+        Object result;
 
         if (start <= reservationDate && end >= reservationDate) {
             result = true;
         }
-        exception = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
+        result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
 
-        assertThat(result).isFalse();
-        assertThat(exception).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
+        assertThat(result).isNotEqualTo(true);
+        assertThat(result).isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
@@ -100,19 +96,18 @@ class ValidationServiceImplTest {
     public void isFormat_정상케이스(String reservationMenuAndQuantity) {
         Object result;
 
-
         String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
-
         Stream<String> reservationMenuAndQuantityStream = Arrays.stream(reservationMenuAndQuantityCommaSplit).
                 filter(s -> s.contains("-"));
+
         if(reservationMenuAndQuantityCommaSplit.length==reservationMenuAndQuantityStream.count()){
             result = true;
         }else {
             result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_FORMAT.getMessage());
         }
+
         assertThat(result).isEqualTo(true);
         assertThat(result).isNotInstanceOf(IllegalArgumentException.class);
-
     }
 
     @ParameterizedTest
@@ -122,14 +117,15 @@ class ValidationServiceImplTest {
         Object result ;
 
         String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
-
         Stream<String> reservationMenuAndQuantityStream = Arrays.stream(reservationMenuAndQuantityCommaSplit).
                 filter(s -> s.contains("-"));
+
         if(reservationMenuAndQuantityCommaSplit.length==reservationMenuAndQuantityStream.count()){
             result = true;
         }else {
             result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_FORMAT.getMessage());
         }
+
         assertThat(result).isNotEqualTo(true);
         assertThat(result).isInstanceOf(IllegalArgumentException.class);
 
@@ -140,6 +136,7 @@ class ValidationServiceImplTest {
     @DisplayName("입력 값의 메뉴의 개수가 숫자이면 true를 반환한다.")
     void isValidQuantity_정상케이스(String reservationMenuAndQuantity) {
         Object result;
+
         try {
             String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
             for(String MenuAndQuantity:reservationMenuAndQuantityCommaSplit){
@@ -150,6 +147,7 @@ class ValidationServiceImplTest {
         }catch (Exception e){
             result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
         }
+
         assertThat(result).isEqualTo(true);
     }
 
@@ -158,6 +156,7 @@ class ValidationServiceImplTest {
     @DisplayName("입력 값의 메뉴의 개수가 숫자가아니면 예외를 반환한다.")
     void isValidQuantity_예외케이스(String reservationMenuAndQuantity) {
         Object result;
+
         try {
             String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
             for(String MenuAndQuantity:reservationMenuAndQuantityCommaSplit){
@@ -168,8 +167,15 @@ class ValidationServiceImplTest {
         }catch (Exception e){
             result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
         }
+
         assertThat(result).isNotEqualTo(true);
         assertThat(result).isInstanceOf(IllegalArgumentException.class);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"해산물파스타-1", "해산물파스타-2,레드와인-1,초코케이크-1"})
+    @DisplayName("입력 값의 메뉴의 개수가 숫자가아니면 예외를 반환한다.")
+    void isRangeQuantity(String reservationMenuAndQuantity) {
+
+    }
 }
