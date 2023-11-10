@@ -44,7 +44,7 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     private boolean isFormat(String reservationMenuAndQuantity){
-        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+        String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
 
         Stream<String> reservationMenuAndQuantityStream = Arrays.stream(reservationMenuAndQuantityCommaSplit).
                 filter(s -> s.contains("-"));
@@ -53,6 +53,20 @@ public class ValidationServiceImpl implements ValidationService {
         }
 
         throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_FORMAT.getMessage());
+    }
+
+    public boolean isDigitQuantity(String reservationMenuAndQuantity){
+        String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
+        for(String MenuAndQuantity:reservationMenuAndQuantityCommaSplit){
+            String[] split = MenuAndQuantity.split("-");
+            isDigit(split[1]);
+        }
+        return true;
+    }
+
+    private String[] stringSplitComma(String reservationMenuAndQuantity) {
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+        return reservationMenuAndQuantityCommaSplit;
     }
 }
 
