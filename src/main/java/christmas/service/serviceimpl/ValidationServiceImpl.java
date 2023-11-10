@@ -9,6 +9,9 @@ import java.util.stream.Stream;
 public class ValidationServiceImpl implements ValidationService {
     private final int RESERVATION_DATE_RANGE_START = 1;
     private final int RESERVATION_DATE_RANGE_END = 31;
+    private final int RESERVATION_QUANTITY_RANGE_START = 1;
+    private final int RESERVATION_QUANTITY_RANGE_END = 20;
+
 
     @Override
     public boolean isReservationDate(String reservationDate){
@@ -55,13 +58,35 @@ public class ValidationServiceImpl implements ValidationService {
         throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_FORMAT.getMessage());
     }
 
-    public boolean isDigitQuantity(String reservationMenuAndQuantity){
+    private boolean isDigitQuantity(String reservationMenuAndQuantity){
         String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
-        for(String MenuAndQuantity:reservationMenuAndQuantityCommaSplit){
-            String[] split = MenuAndQuantity.split("-");
-            isDigit(split[1]);
+        for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+            String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
+            isDigit(menuAndQuantityHyphenSplit[1]);
         }
         return true;
+    }
+
+    private boolean isRangeQuantity(String reservationMenuAndQuantity){
+        try {
+            String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
+                int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
+
+                if(quantity < RESERVATION_QUANTITY_RANGE_START || RESERVATION_QUANTITY_RANGE_END > 20){
+                    throw new IllegalArgumentException();
+                }
+            }
+            return true;
+        }catch (IllegalArgumentException e){
+            throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
+        }
+    }
+
+    private String[] stringSplitHyphen(String reservationMenuAndQuantity) {
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split("-");
+        return reservationMenuAndQuantityCommaSplit;
     }
 
     private String[] stringSplitComma(String reservationMenuAndQuantity) {
