@@ -2,6 +2,7 @@ package christmas.service.serviceimpl;
 
 import christmas.constant.ChristmasPromotionException;
 
+import christmas.constant.Menu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
@@ -77,7 +78,7 @@ class ValidationServiceImplTest {
 
     @ParameterizedTest
     @CsvSource(value = {"32,1,31", "0,1,31", "33,1,31", "34,1,31", "100,1,31"}, delimiter = ',')
-    @DisplayName("입력 값이 숫자형인지 확인한다.")
+    @DisplayName("입력 값이 범위에 포함되지 않으면 예외를 반환한다.")
     public void isRangeReservationDate_예외케이스(int reservationDate, int start, int end) {
         Object result;
 
@@ -92,7 +93,7 @@ class ValidationServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"해산물파스타-2", "해산물파스타-2,레드와인-1,초코케이크-1"})
-    @DisplayName("입력 값이 형싱에 맞으면 true를 반환한다.")
+    @DisplayName("입력 값이 형식에 맞으면 true를 반환한다.")
     public void isFormat_정상케이스(String reservationMenuAndQuantity) {
         Object result;
 
@@ -112,7 +113,7 @@ class ValidationServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"", "해산물파스타2", "해산물파스타2,레드와인.1,초코케이크31"})
-    @DisplayName("입력 값이 형싱에 맞지 않으면 예외를 반환한다.")
+    @DisplayName("입력 값이 형식에 맞지 않으면 예외를 반환한다.")
     public void isFormat_예외케이스(String reservationMenuAndQuantity) {
         Object result ;
 
@@ -174,7 +175,7 @@ class ValidationServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"해산물파스타-1", "해산물파스타-2,레드와인-1,초코케이크-1"})
-    @DisplayName("입력 값의 메뉴의 개수가 숫자가아니면 예외를 반환한다.")
+    @DisplayName("입력 값의 메뉴의 개수가 범위에 포함되면 true를 반환한다.")
     void isRangeQuantity_정상케이스(String reservationMenuAndQuantity) {
         Object result;
 
@@ -190,7 +191,7 @@ class ValidationServiceImplTest {
             }
             result = true;
         }catch (Exception e){
-            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
         }
 
         assertThat(result).isEqualTo(true);
@@ -198,7 +199,7 @@ class ValidationServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"해산물파스타-0", "해산물파스타-21,레드와인-1,초코케이크-1"})
-    @DisplayName("입력 값의 메뉴의 개수가 숫자가아니면 예외를 반환한다.")
+    @DisplayName("입력 값의 메뉴의 개수가 범위에 포함되지 않으면 예외를 반환한다.")
     void isRangeQuantity_예외케이스(String reservationMenuAndQuantity) {
         Object result;
 
@@ -214,7 +215,47 @@ class ValidationServiceImplTest {
             }
             result = true;
         }catch (Exception e){
-            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
+        }
+
+        assertThat(result).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"해산물파스타-0", "해산물파스타-21,레드와인-1,초코케이크-1"})
+    @DisplayName("입력 값의 메뉴가 존재하면  true를 반환한다.")
+    void isMenu_정상케이스(String reservationMenuAndQuantity){
+        Object result;
+
+        try {
+            String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+                Menu.getMenu(menuAndQuantityHyphenSplit[0]);
+            }
+            result = true;
+        }catch (IndexOutOfBoundsException e){
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_MENU.getMessage());
+        }
+
+        assertThat(result).isEqualTo(true);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"짜장면-0", "해산물파스타-21,짬뽕-1,초코케이크-1","탕수육-21,티본스테이크-1,초코케이크-1"})
+    @DisplayName("입력 값의 메뉴가 존재하지 않으면  예외를 반환한다.")
+    void isMenu_예외케이스(String reservationMenuAndQuantity){
+        Object result;
+
+        try {
+            String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+                Menu.getMenu(menuAndQuantityHyphenSplit[0]);
+            }
+            result = true;
+        }catch (IndexOutOfBoundsException e){
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_MENU.getMessage());
         }
 
         assertThat(result).isInstanceOf(IllegalArgumentException.class);
