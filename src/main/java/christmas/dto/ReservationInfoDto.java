@@ -40,4 +40,11 @@ public class ReservationInfoDto {
         return totalPriceBeforeDiscount;
     }
 
+    public List<Menu> getReservationMenus() {
+        return reservationMenus;
+    }
+
+    public String getReservationDate() {
+        return reservationDate;
+    }
 }
