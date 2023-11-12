@@ -75,7 +75,7 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     private boolean isRangeQuantity(String reservationMenuAndQuantity,int start, int end){
-        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+        String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
         int totalQuantity = 0;
 
         for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
@@ -108,15 +108,15 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     private boolean isDuplicationMenu(String reservationMenuAndQuantity){
-        List<String> menus = new ArrayList<>();
-        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+        List<String> menuNames = new ArrayList<>();
+        String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
 
         for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
-            String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
-            if(menus.contains(menuAndQuantityHyphenSplit[0])){
+            String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
+            if(menuNames.contains(menuAndQuantityHyphenSplit[0])){
                 throw new IllegalArgumentException(ChristmasPromotionException.INPUT_DUPLICATION_MENU.getMessage());
             }
-            menus.add(menuAndQuantityHyphenSplit[0]);
+            menuNames.add(menuAndQuantityHyphenSplit[0]);
         }
         return true;
     }
