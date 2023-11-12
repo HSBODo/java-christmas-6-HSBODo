@@ -33,9 +33,9 @@ public class ValidationServiceImpl implements ValidationService {
         return false;
     }
 
-    private boolean isDigit(String reservationDate){
+    private boolean isDigit(String input){
         try {
-            Integer.parseInt(reservationDate);
+            Integer.parseInt(input);
             return true;
         }catch (NumberFormatException e){
             throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_DiGIT.getMessage());
