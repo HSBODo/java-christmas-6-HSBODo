@@ -12,7 +12,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -223,7 +225,7 @@ class ValidationServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"해산물파스타-0", "해산물파스타-21,레드와인-1,초코케이크-1"})
-    @DisplayName("입력 값의 메뉴가 존재하면  true를 반환한다.")
+    @DisplayName("입력 값의 메뉴가 존재하면 true를 반환한다.")
     void isMenu_정상케이스(String reservationMenuAndQuantity){
         Object result;
 
@@ -243,7 +245,7 @@ class ValidationServiceImplTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"짜장면-0", "해산물파스타-21,짬뽕-1,초코케이크-1","탕수육-21,티본스테이크-1,초코케이크-1"})
-    @DisplayName("입력 값의 메뉴가 존재하지 않으면  예외를 반환한다.")
+    @DisplayName("입력 값의 메뉴가 존재하지 않으면 예외를 반환한다.")
     void isMenu_예외케이스(String reservationMenuAndQuantity){
         Object result;
 
@@ -256,6 +258,55 @@ class ValidationServiceImplTest {
             result = true;
         }catch (IndexOutOfBoundsException e){
             result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_MENU.getMessage());
+        }
+
+        assertThat(result).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"해산물파스타-1", "해산물파스타-1,티본스테이크-2,초코케이크-1","해산물파스타-2,티본스테이크-1,초코케이크-1"})
+    @DisplayName("입력 값의 메뉴가 중복되지 않으면 true를 반환한다.")
+    void isDuplicationMenu_정상케이스(String reservationMenuAndQuantity){
+        Object result;
+
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+        List<String> menus = new ArrayList<>();
+        try {
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+                if(menus.contains(menuAndQuantityHyphenSplit[0])){
+                    throw new IllegalArgumentException();
+                }
+                menus.add(menuAndQuantityHyphenSplit[0]);
+            }
+            result = true;
+        }catch (Exception e){
+            result = e;
+        }
+
+        assertThat(result).isEqualTo(true);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"해산물파스타-1,해산물파스타-2,초코케이크-1","초코케이크-2,티본스테이크-1,초코케이크-1"})
+    @DisplayName("입력 값의 메뉴가 중복되면 예외를 반환한다.")
+    void isDuplicationMenu_예외케이스(String reservationMenuAndQuantity){
+        Object result;
+
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+        List<String> menus = new ArrayList<>();
+
+        try {
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+                if(menus.contains(menuAndQuantityHyphenSplit[0])){
+                    throw new IllegalArgumentException();
+                }
+                menus.add(menuAndQuantityHyphenSplit[0]);
+            }
+            result = true;
+        }catch (Exception e){
+            result = new IllegalArgumentException();
         }
 
         assertThat(result).isInstanceOf(IllegalArgumentException.class);
