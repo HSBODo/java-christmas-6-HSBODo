@@ -17,4 +17,20 @@ public class EventServiceImpl implements EventService {
         return true;
     }
 
+    private int applyChristmasDDayEvent(ReservationInfoDto reservationInfoDto){
+        final int oneDayPerDiscountPrice = 100;
+        final int discountFirstDay = 1;
+        final int discountLastDay = 25;
+
+        int minDiscountPrice = 1000;
+        int reservationDay = Integer.parseInt(reservationInfoDto.getReservationDate());
+
+        if(reservationDay>discountLastDay || reservationDay<discountFirstDay) return 0;
+
+        int discountPrice = minDiscountPrice+((reservationDay-1)*oneDayPerDiscountPrice);
+
+        return discountPrice;
+    }
+
+
 }
