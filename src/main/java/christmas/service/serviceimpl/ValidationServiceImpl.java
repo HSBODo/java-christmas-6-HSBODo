@@ -81,11 +81,9 @@ public class ValidationServiceImpl implements ValidationService {
         for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
             String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
             int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
-
             if(quantity < start || quantity > end){
                 throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
             }
-
             totalQuantity += quantity;
         }
 
@@ -94,6 +92,19 @@ public class ValidationServiceImpl implements ValidationService {
         }
 
         return true;
+    }
+
+    private boolean isMenu(String reservationMenuAndQuantity){
+        String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
+        try {
+            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+                String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
+                Menu.getMenu(menuAndQuantityHyphenSplit[0]);
+            }
+            return true;
+        }catch (IndexOutOfBoundsException e){
+            throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_MENU.getMessage());
+        }
     }
 
     private String[] stringSplitHyphen(String reservationMenuAndQuantity) {
