@@ -330,7 +330,7 @@ class ValidationServiceImplTest {
         if(menuCategory.contains("디저트") || menuCategory.contains("메인") || menuCategory.contains("애피타이저")){
             result = true;
         }else{
-            result = new IllegalArgumentException();
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_INCLUDE_NECESSARY_MENU.getMessage());
         }
 
         assertThat(result).isEqualTo(true);
@@ -354,7 +354,7 @@ class ValidationServiceImplTest {
         if(menuCategory.contains("디저트") || menuCategory.contains("메인") || menuCategory.contains("애피타이저")){
             result = true;
         }else{
-            result = new IllegalArgumentException();
+            result = new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_INCLUDE_NECESSARY_MENU.getMessage());
         }
 
         assertThat(result).isInstanceOf(IllegalArgumentException.class);
