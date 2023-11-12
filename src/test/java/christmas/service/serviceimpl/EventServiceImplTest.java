@@ -1,9 +1,20 @@
 package christmas.service.serviceimpl;
 
+import christmas.constant.Menu;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,5 +78,25 @@ class EventServiceImplTest {
         if(reservationDay>discountLastDay || reservationDay<discountFirstDay) discountPrice = 0;
         assertThat(discountPrice).isZero();
     }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "2023,12,1",
+            "2023,12,2",
+            "2023,12,3",
+            "2023,12,4",
+            "2023,12,5",
+            "2023,12,6",
+            "2023,12,7",
+            "2023,12,8"
+    }, delimiter = ',')
+    @DisplayName("날짜를 받아 요일은 구한다.")
+    void findDayOfWeek(int year, int month, int day) {
+        LocalDate date = LocalDate.of(year, month, day);
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+        assertThat(dayOfWeek.getValue()).isNotZero();
+    }
+
 
 }
