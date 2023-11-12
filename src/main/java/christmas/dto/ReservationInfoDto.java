@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReservationInfoDto {
-    private String reservationDate;
+    private int reservationDay;
     private List<Menu> reservationMenus;
     private int totalPriceBeforeDiscount;
     private int totalPriceAfterDiscount;
@@ -15,7 +15,7 @@ public class ReservationInfoDto {
     private String badge;
 
     public ReservationInfoDto(String reservationDate, String reservationMenuAndQuantity) {
-        this.reservationDate = reservationDate;
+        this.reservationDay = Integer.parseInt(reservationDate);
         initReservationMenus(reservationMenuAndQuantity);
         initTotalPriceBeforeDiscount();
     }
@@ -44,7 +44,7 @@ public class ReservationInfoDto {
         return reservationMenus;
     }
 
-    public String getReservationDate() {
-        return reservationDate;
+    public int getReservationDay() {
+        return reservationDay;
     }
 }
