@@ -1,9 +1,12 @@
 package christmas.service.serviceimpl;
 
 import christmas.constant.ChristmasPromotionException;
+import christmas.constant.Menu;
 import christmas.service.ValidationService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class ValidationServiceImpl implements ValidationService {
@@ -40,17 +43,19 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     private boolean isRangeReservationDate(int reservationDate,int start,int end){
+
         if(start <= reservationDate && end >= reservationDate){
             return true;
         }
+
         throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
     }
 
     private boolean isFormat(String reservationMenuAndQuantity){
         String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
-
         Stream<String> reservationMenuAndQuantityStream = Arrays.stream(reservationMenuAndQuantityCommaSplit).
                 filter(s -> s.contains("-"));
+
         if(reservationMenuAndQuantityCommaSplit.length==reservationMenuAndQuantityStream.count()){
             return true;
         }
@@ -60,28 +65,35 @@ public class ValidationServiceImpl implements ValidationService {
 
     private boolean isDigitQuantity(String reservationMenuAndQuantity){
         String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
+
         for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
             String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
             isDigit(menuAndQuantityHyphenSplit[1]);
         }
+
         return true;
     }
 
-    private boolean isRangeQuantity(String reservationMenuAndQuantity){
-        try {
-            String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
-            for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
-                String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
-                int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
+    private boolean isRangeQuantity(String reservationMenuAndQuantity,int start, int end){
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+        int totalQuantity = 0;
 
-                if(quantity < RESERVATION_QUANTITY_RANGE_START || RESERVATION_QUANTITY_RANGE_END > 20){
-                    throw new IllegalArgumentException();
-                }
+        for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+            String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
+            int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
+
+            if(quantity < start || quantity > end){
+                throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
             }
-            return true;
-        }catch (IllegalArgumentException e){
+
+            totalQuantity += quantity;
+        }
+
+        if(totalQuantity>end){
             throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
         }
+
+        return true;
     }
 
     private String[] stringSplitHyphen(String reservationMenuAndQuantity) {
