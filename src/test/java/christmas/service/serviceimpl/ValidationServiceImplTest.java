@@ -311,4 +311,52 @@ class ValidationServiceImplTest {
 
         assertThat(result).isInstanceOf(IllegalArgumentException.class);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"해산물파스타-1,제로콜라-2,초코케이크-1","레드와인-2,티본스테이크-1,초코케이크-1"})
+    @DisplayName("입력 값의 메뉴가 음료만 존재하지 않으면 true를 반환한다.")
+    public void isNotOnlyBeverage_정상케이스(String reservationMenuAndQuantity) {
+        Object result;
+
+        List<String> menuCategory = new ArrayList<>();
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+
+        for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+            String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+            Menu menu = Menu.getMenu(menuAndQuantityHyphenSplit[0]);
+            menuCategory.add(menu.getCategory());
+        }
+
+        if(menuCategory.contains("디저트") || menuCategory.contains("메인") || menuCategory.contains("애피타이저")){
+            result = true;
+        }else{
+            result = new IllegalArgumentException();
+        }
+
+        assertThat(result).isEqualTo(true);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"제로콜라-1","레드와인-2","샴페인-3"})
+    @DisplayName("입력 값의 메뉴가 음료만 존재하면 예외를 반환한다.")
+    public void isNotOnlyBeverage_예외케이스(String reservationMenuAndQuantity) {
+        Object result;
+
+        List<String> menuCategory = new ArrayList<>();
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+
+        for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+            String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+            Menu menu = Menu.getMenu(menuAndQuantityHyphenSplit[0]);
+            menuCategory.add(menu.getCategory());
+        }
+
+        if(menuCategory.contains("디저트") || menuCategory.contains("메인") || menuCategory.contains("애피타이저")){
+            result = true;
+        }else{
+            result = new IllegalArgumentException();
+        }
+
+        assertThat(result).isInstanceOf(IllegalArgumentException.class);
+    }
 }
