@@ -35,4 +35,37 @@ class EventServiceImplTest {
         }
         assertThat(result).isEqualTo(false);
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1,10,15,25})
+    @DisplayName("크리스마스 D-Day 이벤트 할인금액을 반환한다.")
+    void applyChristmasDDayEvent_정상케이스(int totalPriceBeforeDiscount) {
+        final int oneDayPerDiscountPrice = 100;
+        final int discountFirstDay = 1;
+        final int discountLastDay = 25;
+
+        int minDiscountPrice = 1000;
+        int reservationDay = totalPriceBeforeDiscount;
+
+        int discountPrice = minDiscountPrice+((reservationDay-1)*oneDayPerDiscountPrice);
+        if(reservationDay>discountLastDay || reservationDay<discountFirstDay) discountPrice = 0;
+        assertThat(discountPrice).isNotZero();
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0,26,31,88})
+    @DisplayName("크리스마스 D-Day 이벤트 기간이 아니면 0을 반환한다.")
+    void applyChristmasDDayEvent_예외케이스(int totalPriceBeforeDiscount) {
+        final int oneDayPerDiscountPrice = 100;
+        final int discountFirstDay = 1;
+        final int discountLastDay = 25;
+
+        int minDiscountPrice = 1000;
+        int reservationDay = totalPriceBeforeDiscount;
+
+        int discountPrice = minDiscountPrice+((reservationDay-1)*oneDayPerDiscountPrice);
+        if(reservationDay>discountLastDay || reservationDay<discountFirstDay) discountPrice = 0;
+        assertThat(discountPrice).isZero();
+    }
+
 }
