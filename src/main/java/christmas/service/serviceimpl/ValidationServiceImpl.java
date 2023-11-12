@@ -31,7 +31,22 @@ public class ValidationServiceImpl implements ValidationService {
 
     @Override
     public boolean isReservationMenuAndQuantity(String reservationMenuAndQuantity) {
-        return false;
+        try {
+            //입력 형식 검증
+            isFormat(reservationMenuAndQuantity);
+            //입력 수량 검증
+            isDigitQuantity(reservationMenuAndQuantity);
+            isRangeQuantity(reservationMenuAndQuantity,RESERVATION_QUANTITY_RANGE_START,RESERVATION_QUANTITY_RANGE_END);
+            //입력 메뉴 검증
+            isMenu(reservationMenuAndQuantity);
+            isDuplicationMenu(reservationMenuAndQuantity);
+            isNotOnlyBeverage(reservationMenuAndQuantity);
+
+            return true;
+        }catch (Exception e){
+            System.out.println(ChristmasPromotionException.INPUT_NOT_VALID_MENU_QUANTITY.getMessage());
+            return false;
+        }
     }
 
     private boolean isDigit(String input){
