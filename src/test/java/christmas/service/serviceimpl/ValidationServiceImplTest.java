@@ -275,7 +275,7 @@ class ValidationServiceImplTest {
             for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
                 String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
                 if(menus.contains(menuAndQuantityHyphenSplit[0])){
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException(ChristmasPromotionException.INPUT_DUPLICATION_MENU.getMessage());
                 }
                 menus.add(menuAndQuantityHyphenSplit[0]);
             }
@@ -300,13 +300,13 @@ class ValidationServiceImplTest {
             for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
                 String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
                 if(menus.contains(menuAndQuantityHyphenSplit[0])){
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException(ChristmasPromotionException.INPUT_DUPLICATION_MENU.getMessage());
                 }
                 menus.add(menuAndQuantityHyphenSplit[0]);
             }
             result = true;
         }catch (Exception e){
-            result = new IllegalArgumentException();
+            result = e;
         }
 
         assertThat(result).isInstanceOf(IllegalArgumentException.class);
