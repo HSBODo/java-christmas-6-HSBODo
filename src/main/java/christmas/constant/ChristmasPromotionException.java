@@ -9,7 +9,7 @@ public enum ChristmasPromotionException {
     INPUT_NOT_VALID_RANGE(ERROR.message+"유효하지 않는 범위입니다."),
     INPUT_NOT_VALID_FORMAT(ERROR.message+"유효하지 않은 포맷 형식입니다. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)"),
     INPUT_NOT_VALID_MENU(ERROR.message+"존재하지 않는 메뉴입니다."),
-    INPUT_DUPLICATION_MENU(ERROR.message+"존재하지 않는 메뉴입니다.")
+    INPUT_DUPLICATION_MENU(ERROR.message+"메뉴가 중복됩니다.")
     ;
 
     final private String message;
