@@ -14,6 +14,7 @@ public class ValidationServiceImpl implements ValidationService {
     private final int RESERVATION_DATE_RANGE_END = 31;
     private final int RESERVATION_QUANTITY_RANGE_START = 1;
     private final int RESERVATION_QUANTITY_RANGE_END = 20;
+    private final String[] NECESSARY_INCLUDE_MENU={"디저트","메인","애피타이저"};
 
 
     @Override
@@ -119,6 +120,21 @@ public class ValidationServiceImpl implements ValidationService {
             menuNames.add(menuAndQuantityHyphenSplit[0]);
         }
         return true;
+    }
+
+    private boolean isNotOnlyBeverage(String reservationMenuAndQuantity){
+        List<String> menuCategory = new ArrayList<>();
+        String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
+
+        for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+            String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
+            Menu menu = Menu.getMenu(menuAndQuantityHyphenSplit[0]);
+            menuCategory.add(menu.getCategory());
+        }
+        if(menuCategory.contains(NECESSARY_INCLUDE_MENU[0]) || menuCategory.contains(NECESSARY_INCLUDE_MENU[1]) || menuCategory.contains(NECESSARY_INCLUDE_MENU[2])){
+            return true;
+        }
+        throw new IllegalArgumentException();
     }
 
     private String[] stringSplitHyphen(String reservationMenuAndQuantity) {
