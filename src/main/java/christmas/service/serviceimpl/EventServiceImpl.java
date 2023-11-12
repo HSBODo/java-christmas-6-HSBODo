@@ -1,7 +1,12 @@
 package christmas.service.serviceimpl;
 
+import christmas.constant.Menu;
 import christmas.dto.ReservationInfoDto;
 import christmas.service.EventService;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.stream.Stream;
 
 public class EventServiceImpl implements EventService {
     private final int EVENT_APPLY_PRICE = 10000;
@@ -30,6 +35,13 @@ public class EventServiceImpl implements EventService {
         int discountPrice = minDiscountPrice+((reservationDay-1)*oneDayPerDiscountPrice);
 
         return discountPrice;
+    }
+
+    private int findDayOfWeek(int year, int month, int day){
+        //월요일(1)~일요일(7)
+        LocalDate date = LocalDate.of(year, month, day);
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        return dayOfWeek.getValue();
     }
 
 
