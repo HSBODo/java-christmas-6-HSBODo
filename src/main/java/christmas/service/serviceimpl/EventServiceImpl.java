@@ -37,6 +37,17 @@ public class EventServiceImpl implements EventService {
         return discountPrice;
     }
 
+    private int applyWeekdayDiscount(ReservationInfoDto reservationInfoDto){
+        final int discountCategoryPerDiscountPrice = 2023;
+        final String discountCategory = "디저트";
+
+        long dessertQuantity = reservationInfoDto.getReservationMenus().stream()
+                .filter(menu -> menu.getCategory().contains(discountCategory)).count();
+
+        int discountPrice =  (int)dessertQuantity*discountCategoryPerDiscountPrice;
+        return discountPrice;
+    }
+
     private int findDayOfWeek(int year, int month, int day){
         //월요일(1)~일요일(7)
         LocalDate date = LocalDate.of(year, month, day);
