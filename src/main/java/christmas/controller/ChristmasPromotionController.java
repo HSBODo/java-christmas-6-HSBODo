@@ -22,4 +22,15 @@ public class ChristmasPromotionController {
         this.eventService = new EventServiceImpl();
     }
 
+    private String inputReservationDay(){
+        boolean isValid = false;
+        String reservationDay = null;
+
+        while (!isValid){
+            reservationDay = inputView.inputReservationDay();
+            isValid = validationService.isValidReservationDay(reservationDay);
+        }
+
+        return reservationDay;
+    }
 }
