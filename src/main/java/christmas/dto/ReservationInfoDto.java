@@ -14,11 +14,13 @@ public class ReservationInfoDto {
     private int totalPriceBeforeDiscount;
     private int totalPriceAfterDiscount;
     private int totalDiscountPrice;
+    private Map<DiscountTitle,Integer> discountDetails;
     private String giveaway;
     private String badge;
 
     public ReservationInfoDto(String reservationDay, String reservationMenuAndQuantity) {
         this.reservationDay = Integer.parseInt(reservationDay);
+        this.discountDetails = new HashMap<>();
         initReservationMenus(reservationMenuAndQuantity);
         initTotalPriceBeforeDiscount();
     }
