@@ -30,7 +30,7 @@ public class EventServiceImpl implements EventService {
         final int discountLastDay = 25;
 
         int minDiscountPrice = 1000;
-        int reservationDay = Integer.parseInt(reservationInfoDto.getReservationDate());
+        int reservationDay = reservationInfoDto.getReservationDay();
 
         if(reservationDay>discountLastDay || reservationDay<discountFirstDay) return 0;
 
