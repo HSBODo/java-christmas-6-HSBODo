@@ -50,6 +50,10 @@ public class ReservationInfoDto {
         return reservationMenus;
     }
 
+    public int getQuantityOf(String menuName){
+        return menusQuantity.get(Menu.getMenu(menuName));
+    }
+
     public int getReservationDay() {
         return reservationDay;
     }
