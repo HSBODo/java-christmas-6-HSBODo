@@ -82,11 +82,14 @@ public class ReservationInfoDto {
         this.badge = badge;
     }
 
-    public void setGiveaway(String giveaway) {
-        this.giveaway = giveaway;
+    public void setGiveaway(DiscountTitle discountTitle, Menu menu) {
+        this.giveaway = menu.getName();
+        totalDiscountPrice += menu.getPrice();
+        discountDetails.put(discountTitle,menu.getPrice());
     }
 
-    public void applyDiscountPrice(int discountPrice){
+    public void applyDiscountPrice(DiscountTitle discountTitle, int discountPrice){
+        discountDetails.put(discountTitle,discountPrice);
         totalDiscountPrice += discountPrice;
     }
 }
