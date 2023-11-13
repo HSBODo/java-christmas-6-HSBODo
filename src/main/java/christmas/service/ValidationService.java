@@ -3,8 +3,8 @@ package christmas.service;
 import christmas.constant.ChristmasPromotionException;
 
 public interface ValidationService {
-    boolean isReservationDate(String reservationDate);
+    boolean isValidReservationDay(String reservationDate);
 
-    boolean isReservationMenuAndQuantity(String reservationMenuAndQuantity);
+    boolean isValidReservationMenuAndQuantity(String reservationMenuAndQuantity);
 
 }

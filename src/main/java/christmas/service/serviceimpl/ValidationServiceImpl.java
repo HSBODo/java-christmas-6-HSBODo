@@ -18,7 +18,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 
     @Override
-    public boolean isReservationDate(String reservationDate){
+    public boolean isValidReservationDay(String reservationDate){
         try {
             isDigit(reservationDate);
             isRangeReservationDate(Integer.parseInt(reservationDate),RESERVATION_DATE_RANGE_START,RESERVATION_DATE_RANGE_END);
@@ -30,7 +30,7 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public boolean isReservationMenuAndQuantity(String reservationMenuAndQuantity) {
+    public boolean isValidReservationMenuAndQuantity(String reservationMenuAndQuantity) {
         try {
             //입력 형식 검증
             isFormat(reservationMenuAndQuantity);
