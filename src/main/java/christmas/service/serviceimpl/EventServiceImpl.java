@@ -1,5 +1,6 @@
 package christmas.service.serviceimpl;
 
+import christmas.constant.DiscountTitle;
 import christmas.constant.Menu;
 import christmas.dto.ReservationInfoDto;
 import christmas.service.EventService;
@@ -23,20 +24,21 @@ public class EventServiceImpl implements EventService {
         if(!isApplyEvent(reservationInfoDto)) return reservationInfoDto;
 
         int discount = applyChristmasD_DayDiscount(reservationInfoDto);
-        reservationInfoDto.applyDiscountPrice(discount);
+        reservationInfoDto.applyDiscountPrice(DiscountTitle.크리스마스_디데이_할인, discount);
 
         if(isWeekday(reservationDay)) {
             int discountPrice = applyWeekdayDiscount(reservationInfoDto);
-            reservationInfoDto.applyDiscountPrice(discountPrice);
+            reservationInfoDto.applyDiscountPrice(DiscountTitle.평일_할인, discountPrice);
         }
 
         if(isWeekend(reservationDay)) {
             int discountPrice = applyWeekendDiscount(reservationInfoDto);
-            reservationInfoDto.applyDiscountPrice(discountPrice);
+            reservationInfoDto.applyDiscountPrice(DiscountTitle.주말_할인, discountPrice);
         }
 
         int discountPrice = specialDiscount(reservationInfoDto);
-        reservationInfoDto.applyDiscountPrice(discountPrice);
+        reservationInfoDto.applyDiscountPrice(DiscountTitle.특별_할인, discountPrice);
+
         if(reservationPrice>=120000) reservationInfoDto = giveawayEvent(reservationInfoDto);
 
         reservationInfoDto = badgeEvent(reservationInfoDto);
@@ -68,7 +70,7 @@ public class EventServiceImpl implements EventService {
     private int applyWeekdayDiscount(ReservationInfoDto reservationInfoDto){
         final int discountCategoryPerDiscountPrice = 2023;
         final String discountCategory = "디저트";
-         int dessertQuantity = 0;
+        int dessertQuantity = 0;
 
         List<Menu> desserts = reservationInfoDto.getReservationMenus().stream()
                 .filter(menu -> menu.getCategory().contains(discountCategory))
@@ -96,8 +98,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private ReservationInfoDto giveawayEvent(ReservationInfoDto reservationInfoDto){
-        final String giveWay = Menu.CHAMPAGNE.getName();
-        reservationInfoDto.setGiveaway(giveWay);
+        reservationInfoDto.setGiveaway(DiscountTitle.증정_이벤트,Menu.CHAMPAGNE);
         return reservationInfoDto;
     }
 
