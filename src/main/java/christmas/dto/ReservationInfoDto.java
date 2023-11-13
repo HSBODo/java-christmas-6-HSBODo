@@ -58,6 +58,10 @@ public class ReservationInfoDto {
         return totalDiscountPrice;
     }
 
+    public String getBadge() {
+        return badge;
+    }
+
     public void setBadge(String badge) {
         this.badge = badge;
     }
