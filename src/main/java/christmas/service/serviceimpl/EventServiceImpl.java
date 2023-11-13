@@ -8,7 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class EventServiceImpl implements EventService {
     private final int EVENT_APPLY_NECESSARY_PRICE = 10000;
@@ -68,11 +68,16 @@ public class EventServiceImpl implements EventService {
     private int applyWeekdayDiscount(ReservationInfoDto reservationInfoDto){
         final int discountCategoryPerDiscountPrice = 2023;
         final String discountCategory = "디저트";
+         int dessertQuantity = 0;
+        List<Menu> reservationMenus = reservationInfoDto.getReservationMenus();
+        List<Menu> desserts = reservationInfoDto.getReservationMenus().stream()
+                .filter(menu -> menu.getCategory().contains(discountCategory))
+                .collect(Collectors.toList());
+        for(Menu desert : desserts){
+            dessertQuantity += reservationInfoDto.getQuantityOf(desert.getName());
+        }
 
-        long dessertQuantity = reservationInfoDto.getReservationMenus().stream()
-                .filter(menu -> menu.getCategory().contains(discountCategory)).count();
-
-        return (int)dessertQuantity * discountCategoryPerDiscountPrice;
+        return dessertQuantity * discountCategoryPerDiscountPrice;
     }
 
     private int applyWeekendDiscount(ReservationInfoDto reservationInfoDto){
