@@ -33,7 +33,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값이 예약가능한 날짜이면 true를 반환한다.")
     void isReservationDate_정상케이스(String reservationDate) {
-        boolean result = validationService.isReservationDate(reservationDate);
+        boolean result = validationService.isValidReservationDay(reservationDate);
         assertThat(result).isTrue();
     }
 
@@ -50,7 +50,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값이 예약가능한 날짜가 아니면 false를 반환한다.")
     void isReservationDate_예외케이스(String reservationDate) {
-        boolean result = validationService.isReservationDate(reservationDate);
+        boolean result = validationService.isValidReservationDay(reservationDate);
         assertThat(result).isFalse();
     }
 
@@ -62,7 +62,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값의 메뉴와 수량이 옳바르면 true를 반환 한다")
     void isReservationMenuAndQuantity_정상케이스(String reservationMenuAndQuantity) {
-        boolean result = validationService.isReservationMenuAndQuantity(reservationMenuAndQuantity);
+        boolean result = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
         assertThat(result).isTrue();
     }
 
@@ -79,7 +79,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값의 메뉴와 수량이 옳바르지 않으면 false를 반환 한다")
     void isReservationMenuAndQuantity_예외케이스_입력형식(String reservationMenuAndQuantity) {
-        boolean result = validationService.isReservationMenuAndQuantity(reservationMenuAndQuantity);
+        boolean result = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
         assertThat(result).isFalse();
     }
 
@@ -91,7 +91,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값의 메뉴와 수량이 옳바르지 않으면 false를 반환 한다")
     void isReservationMenuAndQuantity_예외케이스_음료만주문(String reservationMenuAndQuantity) {
-        boolean result = validationService.isReservationMenuAndQuantity(reservationMenuAndQuantity);
+        boolean result = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
         assertThat(result).isFalse();
     }
 
@@ -104,7 +104,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값의 메뉴와 수량이 옳바르지 않으면 false를 반환 한다")
     void isReservationMenuAndQuantity_예외케이스_없는메뉴주문(String reservationMenuAndQuantity) {
-        boolean result = validationService.isReservationMenuAndQuantity(reservationMenuAndQuantity);
+        boolean result = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
         assertThat(result).isFalse();
     }
 
@@ -116,7 +116,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값의 메뉴와 수량이 옳바르지 않으면 false를 반환 한다")
     void isReservationMenuAndQuantity_예외케이스_중복메뉴주문(String reservationMenuAndQuantity) {
-        boolean result = validationService.isReservationMenuAndQuantity(reservationMenuAndQuantity);
+        boolean result = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
         assertThat(result).isFalse();
     }
 
@@ -129,7 +129,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값의 메뉴와 수량이 옳바르지 않으면 false를 반환 한다")
     void isReservationMenuAndQuantity_예외케이스_수량1개미만(String reservationMenuAndQuantity) {
-        boolean result = validationService.isReservationMenuAndQuantity(reservationMenuAndQuantity);
+        boolean result = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
         assertThat(result).isFalse();
     }
 
@@ -142,7 +142,7 @@ class ValidationServiceTest {
     })
     @DisplayName("입력받은 값의 메뉴와 수량이 옳바르지 않으면 false를 반환 한다")
     void isReservationMenuAndQuantity_예외케이스_총수량20개초과(String reservationMenuAndQuantity) {
-        boolean result = validationService.isReservationMenuAndQuantity(reservationMenuAndQuantity);
+        boolean result = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
         assertThat(result).isFalse();
     }
 
