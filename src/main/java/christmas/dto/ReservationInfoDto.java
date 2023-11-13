@@ -72,6 +72,10 @@ public class ReservationInfoDto {
         return badge;
     }
 
+    public String getGiveaway() {
+        return giveaway;
+    }
+
     public void setBadge(String badge) {
         this.badge = badge;
     }
