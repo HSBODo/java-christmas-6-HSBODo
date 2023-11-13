@@ -15,7 +15,6 @@ public class ReservationInfoDto {
     private List<Menu> reservationMenus;
     private Map<Menu,Integer> menusQuantity;
     private int totalPriceBeforeDiscount;
-    private int totalPriceAfterDiscount;
     private int totalDiscountPrice;
     private Map<DiscountTitle,Integer> discountDetails;
     private String giveaway;
@@ -64,9 +63,7 @@ public class ReservationInfoDto {
     }
 
     public int getTotalPriceAfterDiscount() {
-        totalPriceAfterDiscount = totalPriceBeforeDiscount - totalDiscountPrice;
-
-        return totalPriceAfterDiscount;
+        return  totalPriceBeforeDiscount - totalDiscountPrice;
     }
 
     public int getTotalDiscountPrice() {
@@ -97,12 +94,13 @@ public class ReservationInfoDto {
     }
 
     public ReservationInfo toEntity(){
+
         return new ReservationInfo(
                 reservationDay,
                 reservationMenus,
                 menusQuantity,
                 thousandUnitsComma(totalPriceBeforeDiscount),
-                thousandUnitsComma(totalPriceAfterDiscount),
+                thousandUnitsComma(getTotalPriceAfterDiscount()),
                 "-"+thousandUnitsComma(totalDiscountPrice),
                 discountPriceOfDiscountDetailsConvertThousandUnits(discountDetails),
                 giveaway,
