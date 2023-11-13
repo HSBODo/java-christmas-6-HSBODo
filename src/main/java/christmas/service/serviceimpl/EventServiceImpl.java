@@ -6,6 +6,8 @@ import christmas.service.EventService;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class EventServiceImpl implements EventService {
@@ -15,12 +17,27 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public ReservationInfoDto applyDecemberEvent(ReservationInfoDto reservationInfoDto) {
+        final int reservationDay = reservationInfoDto.getReservationDay();
+        final int reservationPrice = reservationInfoDto.getTotalPriceBeforeDiscount();
 
-        if (!isApplyEvent(reservationInfoDto)) return reservationInfoDto;
+        if(!isApplyEvent(reservationInfoDto)) return reservationInfoDto;
+
+        if(isWeekday(reservationDay)) {
+            int discountPrice = applyWeekdayDiscount(reservationInfoDto);
+            reservationInfoDto.applyDiscountPrice(discountPrice);
+        }
+
+        if(isWeekend(reservationDay)) {
+            int discountPrice = applyWeekendDiscount(reservationInfoDto);
+            reservationInfoDto.applyDiscountPrice(discountPrice);
+        }
+
+        int discountPrice = specialDiscount(reservationInfoDto);
+        reservationInfoDto.applyDiscountPrice(discountPrice);
+        if(reservationPrice>=120000) reservationInfoDto = giveawayEvent(reservationInfoDto);
 
 
-
-        return null;
+        return reservationInfoDto;
     }
 
     private boolean isApplyEvent(ReservationInfoDto reservationInfoDto){
