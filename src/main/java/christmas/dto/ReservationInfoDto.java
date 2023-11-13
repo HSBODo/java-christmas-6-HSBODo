@@ -47,4 +47,8 @@ public class ReservationInfoDto {
     public int getReservationDay() {
         return reservationDay;
     }
+
+    public void setGiveaway(String giveaway) {
+        this.giveaway = giveaway;
+    }
 }
