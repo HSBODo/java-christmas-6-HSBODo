@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class EventServiceImpl implements EventService {
-    private final int EVENT_APPLY_PRICE = 10000;
+    private final int EVENT_APPLY_NECESSARY_PRICE = 10000;
     private final int EVENT_APPLY_YEAR = 2023;
     private final int EVENT_APPLY_MONTH = 12;
 
@@ -42,7 +42,7 @@ public class EventServiceImpl implements EventService {
 
     private boolean isApplyEvent(ReservationInfoDto reservationInfoDto){
         int totalPriceBeforeDiscount = reservationInfoDto.getTotalPriceBeforeDiscount();
-        if(totalPriceBeforeDiscount<EVENT_APPLY_PRICE) return false;
+        if(totalPriceBeforeDiscount<EVENT_APPLY_NECESSARY_PRICE) return false;
         return true;
     }
 
