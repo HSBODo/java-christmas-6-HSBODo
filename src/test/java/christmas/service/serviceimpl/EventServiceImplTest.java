@@ -234,5 +234,47 @@ class EventServiceImplTest {
         assertThat(result).isEqualTo(0);
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {5000,10000,20000,5001,10001,20001})
+    @DisplayName("총혜택 금액에 따라 배지를 부여한다.")
+    void badgeEvent_정상케이스(int totalDiscountPrice) {
+        String result = "";
+
+        if(totalDiscountPrice>=20000){
+            result = "산타";
+        }
+        if(totalDiscountPrice>=10000){
+            result = "트리";
+        }
+        if(totalDiscountPrice>=5000){
+            result = "별";
+        }
+        if(totalDiscountPrice<5000){
+            result = "없음";
+        }
+        assertThat(result).isNotEqualTo("없음");
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1,4999,2,4888,3,2222})
+    @DisplayName("총혜택 금액이 5000원 미만이면 없음을 부여한다.")
+    void badgeEvent_예외케이스(int totalDiscountPrice) {
+        String result = "";
+
+        if(totalDiscountPrice>=20000){
+            result = "산타";
+        }
+        if(totalDiscountPrice>=10000){
+            result = "트리";
+        }
+        if(totalDiscountPrice>=5000){
+            result = "별";
+        }
+        if(totalDiscountPrice<5000){
+            result = "없음";
+        }
+        assertThat(result).isEqualTo("없음");
+    }
+
 
 }
