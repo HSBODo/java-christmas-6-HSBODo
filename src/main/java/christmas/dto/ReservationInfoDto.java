@@ -14,8 +14,8 @@ public class ReservationInfoDto {
     private String giveaway;
     private String badge;
 
-    public ReservationInfoDto(String reservationDate, String reservationMenuAndQuantity) {
-        this.reservationDay = Integer.parseInt(reservationDate);
+    public ReservationInfoDto(String reservationDay, String reservationMenuAndQuantity) {
+        this.reservationDay = Integer.parseInt(reservationDay);
         initReservationMenus(reservationMenuAndQuantity);
         initTotalPriceBeforeDiscount();
     }
@@ -46,6 +46,16 @@ public class ReservationInfoDto {
 
     public int getReservationDay() {
         return reservationDay;
+    }
+
+    public int getTotalPriceAfterDiscount() {
+        totalPriceAfterDiscount = totalPriceBeforeDiscount - totalDiscountPrice;
+
+        return totalPriceAfterDiscount;
+    }
+
+    public int getTotalDiscountPrice() {
+        return totalDiscountPrice;
     }
 
     public void setGiveaway(String giveaway) {
