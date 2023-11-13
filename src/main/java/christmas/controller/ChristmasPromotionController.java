@@ -24,6 +24,19 @@ public class ChristmasPromotionController {
         this.eventService = new EventServiceImpl();
     }
 
+    public void reservation(){
+        firstGreetingModelAndView();
+
+        String reservationDay = inputReservationDay();
+        String reservationMenuAndQuantity = inputReservationMenuAndQuantity();
+        ReservationInfoDto reservationInfoDto = new ReservationInfoDto(reservationDay,reservationMenuAndQuantity);
+
+        reservationInfoDto = eventService.applyDecemberEvent(reservationInfoDto);
+        ReservationInfo reservationInfo = reservationInfoDto.toEntity();
+
+        reservationResult(reservationInfo);
+    }
+
     private String inputReservationDay(){
         boolean isValid = false;
         String reservationDay = null;
