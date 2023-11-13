@@ -103,7 +103,7 @@ public class ReservationInfoDto {
                 menusQuantity,
                 thousandUnitsComma(totalPriceBeforeDiscount),
                 thousandUnitsComma(totalPriceAfterDiscount),
-                thousandUnitsComma(totalDiscountPrice),
+                "-"+thousandUnitsComma(totalDiscountPrice),
                 discountPriceOfDiscountDetailsConvertThousandUnits(discountDetails),
                 giveaway,
                 badge
@@ -117,7 +117,7 @@ public class ReservationInfoDto {
     private Map<DiscountTitle,String> discountPriceOfDiscountDetailsConvertThousandUnits(Map<DiscountTitle,Integer> discountDetails){
         Map<DiscountTitle,String> discountDetailsThousandUnits = new HashMap<>();
         discountDetails.forEach((discountTitle, discountPrice) -> {
-            discountDetailsThousandUnits.put(discountTitle,thousandUnitsComma(discountPrice));
+            discountDetailsThousandUnits.put(discountTitle,"-"+thousandUnitsComma(discountPrice));
         });
         return discountDetailsThousandUnits;
     }
