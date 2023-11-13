@@ -15,7 +15,7 @@ class ValidationServiceTest {
     ValidationService validationService;
 
     @BeforeEach
-    public void createValidationService(){
+    public void initValidationService(){
         validationService = new ValidationServiceImpl();
     }
 
