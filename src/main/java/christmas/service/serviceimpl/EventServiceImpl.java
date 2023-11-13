@@ -69,7 +69,7 @@ public class EventServiceImpl implements EventService {
         final int discountCategoryPerDiscountPrice = 2023;
         final String discountCategory = "디저트";
          int dessertQuantity = 0;
-        List<Menu> reservationMenus = reservationInfoDto.getReservationMenus();
+
         List<Menu> desserts = reservationInfoDto.getReservationMenus().stream()
                 .filter(menu -> menu.getCategory().contains(discountCategory))
                 .collect(Collectors.toList());
@@ -83,11 +83,16 @@ public class EventServiceImpl implements EventService {
     private int applyWeekendDiscount(ReservationInfoDto reservationInfoDto){
         final int discountCategoryPerDiscountPrice = 2023;
         final String discountCategory = "메인";
+        int mainQuantity = 0;
 
-        long dessertQuantity = reservationInfoDto.getReservationMenus().stream()
-                .filter(menu -> menu.getCategory().contains(discountCategory)).count();
+        List<Menu> mains = reservationInfoDto.getReservationMenus().stream()
+                .filter(menu -> menu.getCategory().contains(discountCategory))
+                .collect(Collectors.toList());
+        for(Menu main : mains){
+            mainQuantity += reservationInfoDto.getQuantityOf(main.getName());
+        }
 
-        return  (int)dessertQuantity * discountCategoryPerDiscountPrice;
+        return mainQuantity * discountCategoryPerDiscountPrice;
     }
 
     private ReservationInfoDto giveawayEvent(ReservationInfoDto reservationInfoDto){
