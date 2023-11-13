@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 
 public class EventServiceImpl implements EventService {
     private final int EVENT_APPLY_PRICE = 10000;
+    private final int EVENT_APPLY_YEAR = 2023;
+    private final int EVENT_APPLY_MONTH = 12;
 
     @Override
     public ReservationInfoDto applyDecemberEvent(ReservationInfoDto reservationInfoDto) {
@@ -53,6 +55,22 @@ public class EventServiceImpl implements EventService {
         LocalDate date = LocalDate.of(year, month, day);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return dayOfWeek.getValue();
+    }
+
+    private boolean isWeekday(int day){
+        int dayOfWeek = findDayOfWeek(EVENT_APPLY_YEAR, EVENT_APPLY_MONTH, day);
+        if(dayOfWeek == christmas.constant.DayOfWeek.토요일.getValue() || dayOfWeek ==  christmas.constant.DayOfWeek.일요일.getValue()){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isWeekend(int day){
+        int dayOfWeek = findDayOfWeek(EVENT_APPLY_YEAR, EVENT_APPLY_MONTH,day);
+        if(dayOfWeek == christmas.constant.DayOfWeek.토요일.getValue() || dayOfWeek ==  christmas.constant.DayOfWeek.일요일.getValue()){
+            return true;
+        }
+        return false;
     }
 
 
