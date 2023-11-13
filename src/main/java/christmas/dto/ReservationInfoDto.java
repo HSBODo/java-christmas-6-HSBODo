@@ -4,6 +4,7 @@ import christmas.constant.DiscountTitle;
 import christmas.constant.Menu;
 import christmas.domain.ReservationInfo;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,12 +101,24 @@ public class ReservationInfoDto {
                 reservationDay,
                 reservationMenus,
                 menusQuantity,
-                totalPriceBeforeDiscount,
-                totalPriceAfterDiscount,
-                totalDiscountPrice,
-                discountDetails,
+                thousandUnitsComma(totalPriceBeforeDiscount),
+                thousandUnitsComma(totalPriceAfterDiscount),
+                thousandUnitsComma(totalDiscountPrice),
+                discountPriceOfDiscountDetailsConvertThousandUnits(discountDetails),
                 giveaway,
                 badge
         );
+    }
+
+    private String thousandUnitsComma(int number){
+        return NumberFormat.getInstance().format(number);
+    }
+
+    private Map<DiscountTitle,String> discountPriceOfDiscountDetailsConvertThousandUnits(Map<DiscountTitle,Integer> discountDetails){
+        Map<DiscountTitle,String> discountDetailsThousandUnits = new HashMap<>();
+        discountDetails.forEach((discountTitle, discountPrice) -> {
+            discountDetailsThousandUnits.put(discountTitle,thousandUnitsComma(discountPrice));
+        });
+        return discountDetailsThousandUnits;
     }
 }
