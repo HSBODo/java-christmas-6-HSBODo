@@ -138,7 +138,7 @@ public class EventServiceImpl implements EventService {
 
     private boolean isWeekday(int day){
         int dayOfWeek = findDayOfWeek(EVENT_APPLY_YEAR, EVENT_APPLY_MONTH, day);
-        if(dayOfWeek == christmas.constant.DayOfWeek.토요일.getValue() || dayOfWeek ==  christmas.constant.DayOfWeek.일요일.getValue()){
+        if(dayOfWeek == christmas.constant.DayOfWeek.금요일.getValue() || dayOfWeek ==  christmas.constant.DayOfWeek.토요일.getValue()){
             return false;
         }
         return true;
@@ -146,7 +146,7 @@ public class EventServiceImpl implements EventService {
 
     private boolean isWeekend(int day){
         int dayOfWeek = findDayOfWeek(EVENT_APPLY_YEAR, EVENT_APPLY_MONTH,day);
-        if(dayOfWeek == christmas.constant.DayOfWeek.토요일.getValue() || dayOfWeek ==  christmas.constant.DayOfWeek.일요일.getValue()){
+        if(dayOfWeek == christmas.constant.DayOfWeek.금요일.getValue() || dayOfWeek ==  christmas.constant.DayOfWeek.토요일.getValue()){
             return true;
         }
         return false;
