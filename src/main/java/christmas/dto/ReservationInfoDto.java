@@ -51,4 +51,8 @@ public class ReservationInfoDto {
     public void setGiveaway(String giveaway) {
         this.giveaway = giveaway;
     }
+
+    public void applyDiscountPrice(int discountPrice){
+        totalDiscountPrice += discountPrice;
+    }
 }
