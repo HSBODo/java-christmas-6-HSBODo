@@ -1,6 +1,8 @@
 package christmas.controller;
 
+import christmas.domain.ReservationInfo;
 import christmas.dto.ReservationInfoDto;
+import christmas.model.Model;
 import christmas.service.EventService;
 import christmas.service.ValidationService;
 import christmas.service.serviceimpl.EventServiceImpl;
@@ -45,4 +47,40 @@ public class ChristmasPromotionController {
 
         return reservationMenuAndQuantity;
     }
+
+    private void firstGreetingModelAndView(){
+        final String FIRST_GREETING = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
+        Model model = new Model();
+        model.addAttribute("firstGreeting",FIRST_GREETING);
+        outputView.firstGreeting(model);
+    }
+
+    private void orderMenuModelAndView(Model model){
+        outputView.orderMenu(model);
+    }
+
+    private void totalPriceBeforeDiscountModelAndView(Model model){
+        outputView.totalPriceBeforeDiscount(model);
+    }
+
+    private void giveawayModelAndView(Model model){
+        outputView.giveaway(model);
+    }
+
+    private void discountDetailsModelAndView(Model model){
+        outputView.discountDetails(model);
+    }
+
+    private void totalDiscountPriceModelAndView(Model model){
+        outputView.totalDiscountPrice(model);
+    }
+
+    private void totalPriceAfterDiscount(Model model){
+        outputView.totalPriceAfterDiscount(model);
+    }
+
+    private void badgeModelAndView(Model model){
+        outputView.badge(model);
+    }
+
 }
