@@ -2,6 +2,7 @@ package christmas.dto;
 
 import christmas.constant.DiscountTitle;
 import christmas.constant.Menu;
+import christmas.domain.ReservationInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,5 +93,19 @@ public class ReservationInfoDto {
     public void applyDiscountPrice(DiscountTitle discountTitle, int discountPrice){
         discountDetails.put(discountTitle,discountPrice);
         totalDiscountPrice += discountPrice;
+    }
+
+    public ReservationInfo toEntity(){
+        return new ReservationInfo(
+                reservationDay,
+                reservationMenus,
+                menusQuantity,
+                totalPriceBeforeDiscount,
+                totalPriceAfterDiscount,
+                totalDiscountPrice,
+                discountDetails,
+                giveaway,
+                badge
+        );
     }
 }
