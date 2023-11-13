@@ -99,11 +99,13 @@ class EventServiceImplTest {
     }
 
     @Test
-    @DisplayName("평일 이벤트 디저트1개당 2023원 할인금액을 반환한다.")
-    void applyWeekdayEvent_정상케이스() {
+    @DisplayName("평일 할인은 디저트1개당 2023원 할인금액을 반환한다.")
+    void applyWeekdayDiscount_정상케이스() {
         Object result;
 
-        final int dessertPerDiscountPrice = 2023;
+        final int discountCategoryPerDiscountPrice = 2023;
+        final String discountCategory = "디저트";
+
         List<Menu> menus = new ArrayList<>();
         Menu 초코케이크 = Menu.getMenu("초코케이크");
         Menu 아이스크림 = Menu.getMenu("아이스크림");
@@ -116,22 +118,24 @@ class EventServiceImplTest {
         menus.add(아이스크림);
 
         long 디저트수량 = menus.stream()
-                .filter(menu -> menu.getCategory().contains("디저트")).count();
+                .filter(menu -> menu.getCategory().contains(discountCategory)).count();
 
-        result = (int)디저트수량*dessertPerDiscountPrice;
+        result = (int)디저트수량*discountCategoryPerDiscountPrice;
 
         assertThat(result).isEqualTo(2023*2);
     }
 
     @Test
-    @DisplayName("평일 이벤트 메뉴에 디저트가 없으면 할인금액 0원을 반환한다.")
-    void applyWeekdayEvent_예외케이스() {
+    @DisplayName("평일 할인은 메뉴에 디저트가 없으면 할인금액 0원을 반환한다.")
+    void applyWeekdayDiscount_예외케이스() {
         Object result;
 
-        final int dessertPerDiscountPrice = 2023;
+        final int discountCategoryPerDiscountPrice = 2023;
+        final String discountCategory = "디저트";
+
         List<Menu> menus = new ArrayList<>();
         Menu 초코케이크 = Menu.getMenu("양송이수프");
-        Menu 아이스크림 = Menu.getMenu("크리스마스파스타");
+        Menu 아이스크림 = Menu.getMenu("바비큐립");
         Menu 레드와인 = Menu.getMenu("레드와인");
         Menu 해산물파스타 = Menu.getMenu("해산물파스타");
 
@@ -141,9 +145,8 @@ class EventServiceImplTest {
         menus.add(아이스크림);
 
         long 디저트수량 = menus.stream()
-                .filter(menu -> menu.getCategory().contains("디저트")).count();
-
-        result = (int)디저트수량*dessertPerDiscountPrice;
+                .filter(menu -> menu.getCategory().contains(discountCategory)).count();
+        result = (int)디저트수량*discountCategoryPerDiscountPrice;
 
         assertThat(result).isEqualTo(0);
     }
