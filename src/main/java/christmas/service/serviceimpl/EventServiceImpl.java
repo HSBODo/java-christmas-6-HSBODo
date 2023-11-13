@@ -22,6 +22,9 @@ public class EventServiceImpl implements EventService {
 
         if(!isApplyEvent(reservationInfoDto)) return reservationInfoDto;
 
+        int discount = applyChristmasD_DayDiscount(reservationInfoDto);
+        reservationInfoDto.applyDiscountPrice(discount);
+
         if(isWeekday(reservationDay)) {
             int discountPrice = applyWeekdayDiscount(reservationInfoDto);
             reservationInfoDto.applyDiscountPrice(discountPrice);
@@ -36,6 +39,7 @@ public class EventServiceImpl implements EventService {
         reservationInfoDto.applyDiscountPrice(discountPrice);
         if(reservationPrice>=120000) reservationInfoDto = giveawayEvent(reservationInfoDto);
 
+        reservationInfoDto = badgeEvent(reservationInfoDto);
 
         return reservationInfoDto;
     }
@@ -93,6 +97,25 @@ public class EventServiceImpl implements EventService {
             return 1000;
         }
         return 0;
+    }
+
+    private ReservationInfoDto badgeEvent(ReservationInfoDto reservationInfoDto){
+        int totalDiscountPrice = reservationInfoDto.getTotalDiscountPrice();
+
+        if(totalDiscountPrice>=20000){
+            reservationInfoDto.setBadge("산타");
+            return reservationInfoDto;
+        }
+        if(totalDiscountPrice>=10000){
+            reservationInfoDto.setBadge("트리");
+            return reservationInfoDto;
+        }
+        if(totalDiscountPrice>=5000) {
+            reservationInfoDto.setBadge("별");
+            return reservationInfoDto;
+        }
+        reservationInfoDto.setBadge("없음");
+        return reservationInfoDto;
     }
 
     private int findDayOfWeek(int year, int month, int day){
