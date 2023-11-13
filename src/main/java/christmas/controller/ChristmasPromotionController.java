@@ -55,6 +55,16 @@ public class ChristmasPromotionController {
         outputView.firstGreeting(model);
     }
 
+    private void reservationResult(ReservationInfo reservationInfo) {
+        orderMenuModelAndView(reservationInfo.toOrderMenuModel());
+        totalPriceBeforeDiscountModelAndView(reservationInfo.toTotalPriceBeforeDiscountModel());
+        giveawayModelAndView(reservationInfo.toGiveawayModel());
+        discountDetailsModelAndView(reservationInfo.toDiscountDetailsModel());
+        totalDiscountPriceModelAndView(reservationInfo.toTotalDiscountPriceModel());
+        totalPriceAfterDiscount(reservationInfo.toTotalPriceAfterDiscountModel());
+        badgeModelAndView(reservationInfo.toBadgeModel());
+    }
+
     private void orderMenuModelAndView(Model model){
         outputView.orderMenu(model);
     }
