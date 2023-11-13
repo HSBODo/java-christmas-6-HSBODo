@@ -33,4 +33,16 @@ public class ChristmasPromotionController {
 
         return reservationDay;
     }
+
+    private String inputReservationMenuAndQuantity(){
+        boolean isValid = false;
+        String reservationMenuAndQuantity = null;
+
+        while (!isValid){
+            reservationMenuAndQuantity = inputView.inputReservationMenuAndQuantity();
+            isValid = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
+        }
+
+        return reservationMenuAndQuantity;
+    }
 }
