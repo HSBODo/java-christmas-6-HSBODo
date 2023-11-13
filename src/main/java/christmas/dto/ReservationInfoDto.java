@@ -3,11 +3,14 @@ package christmas.dto;
 import christmas.constant.Menu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReservationInfoDto {
     private int reservationDay;
     private List<Menu> reservationMenus;
+    private Map<Menu,Integer> menusQuantity;
     private int totalPriceBeforeDiscount;
     private int totalPriceAfterDiscount;
     private int totalDiscountPrice;
@@ -22,18 +25,21 @@ public class ReservationInfoDto {
 
     private void initReservationMenus(String reservationMenuAndQuantity){
         reservationMenus = new ArrayList<>();
+        menusQuantity = new HashMap<>();
         String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
         for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
             String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
-            reservationMenus.add(Menu.getMenu(menuAndQuantityHyphenSplit[0]));
+            Menu menu = Menu.getMenu(menuAndQuantityHyphenSplit[0]);
+            int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
+            reservationMenus.add(menu);
+            menusQuantity.put(menu,quantity);
         }
     }
 
     private void initTotalPriceBeforeDiscount(){
-        reservationMenus.stream().forEach(menu -> {
-            totalPriceBeforeDiscount+=menu.getPrice();
+        menusQuantity.forEach((menu, quantity) -> {
+            totalPriceBeforeDiscount += menu.getPrice() * quantity;
         });
-
     }
 
     public int getTotalPriceBeforeDiscount() {
