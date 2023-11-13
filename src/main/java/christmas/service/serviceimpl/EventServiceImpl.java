@@ -15,6 +15,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public ReservationInfoDto applyDecemberEvent(ReservationInfoDto reservationInfoDto) {
+
+        if (!isApplyEvent(reservationInfoDto)) return reservationInfoDto;
+
+
+
         return null;
     }
 
@@ -57,6 +62,12 @@ public class EventServiceImpl implements EventService {
                 .filter(menu -> menu.getCategory().contains(discountCategory)).count();
 
         return  (int)dessertQuantity * discountCategoryPerDiscountPrice;
+    }
+
+    private ReservationInfoDto giveawayEvent(ReservationInfoDto reservationInfoDto){
+        final String giveWay = Menu.CHAMPAGNE.getName();
+        reservationInfoDto.setGiveaway(giveWay);
+        return reservationInfoDto;
     }
 
     private int findDayOfWeek(int year, int month, int day){
