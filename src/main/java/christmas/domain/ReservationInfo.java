@@ -55,7 +55,7 @@ public class ReservationInfo {
     public Model toDiscountDetailsModel(){
         Model model = new Model();
         discountDetails.forEach((discountTitle, discountPrice) -> {
-            model.addAttribute(discountTitle,discountPrice);
+            model.addAttribute(discountTitle.getTitle(),discountPrice);
         });
         return model;
     }
