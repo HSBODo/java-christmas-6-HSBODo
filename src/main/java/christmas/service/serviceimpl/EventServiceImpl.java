@@ -32,9 +32,9 @@ public class EventServiceImpl implements EventService {
         int minDiscountPrice = 1000;
         int reservationDay = reservationInfoDto.getReservationDay();
 
-        if(reservationDay>discountLastDay || reservationDay<discountFirstDay) return 0;
+        if(reservationDay > discountLastDay || reservationDay < discountFirstDay) return 0;
 
-        int discountPrice = minDiscountPrice+((reservationDay-1)*oneDayPerDiscountPrice);
+        int discountPrice = minDiscountPrice + ((reservationDay-1) * oneDayPerDiscountPrice);
 
         return discountPrice;
     }
@@ -46,8 +46,17 @@ public class EventServiceImpl implements EventService {
         long dessertQuantity = reservationInfoDto.getReservationMenus().stream()
                 .filter(menu -> menu.getCategory().contains(discountCategory)).count();
 
-        int discountPrice =  (int)dessertQuantity*discountCategoryPerDiscountPrice;
-        return discountPrice;
+        return (int)dessertQuantity * discountCategoryPerDiscountPrice;
+    }
+
+    private int applyWeekendDiscount(ReservationInfoDto reservationInfoDto){
+        final int discountCategoryPerDiscountPrice = 2023;
+        final String discountCategory = "메인";
+
+        long dessertQuantity = reservationInfoDto.getReservationMenus().stream()
+                .filter(menu -> menu.getCategory().contains(discountCategory)).count();
+
+        return  (int)dessertQuantity * discountCategoryPerDiscountPrice;
     }
 
     private int findDayOfWeek(int year, int month, int day){
