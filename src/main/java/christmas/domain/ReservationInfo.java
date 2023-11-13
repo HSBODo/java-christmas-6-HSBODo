@@ -33,8 +33,8 @@ public class ReservationInfo {
 
     public Model toOrderMenuModel(){
         Model model = new Model();
-        menusQuantity.forEach((menuName, quantity) -> {
-            model.addAttribute(menuName,quantity);
+        menusQuantity.forEach((menu, quantity) -> {
+            model.addAttribute(menu.getName(),quantity);
         });
         return model;
     }
