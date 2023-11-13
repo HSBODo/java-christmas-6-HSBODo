@@ -24,7 +24,7 @@ public class EventServiceImpl implements EventService {
         return true;
     }
 
-    private int applyChristmasDDayEvent(ReservationInfoDto reservationInfoDto){
+    private int applyChristmasD_DayDiscount(ReservationInfoDto reservationInfoDto){
         final int oneDayPerDiscountPrice = 100;
         final int discountFirstDay = 1;
         final int discountLastDay = 25;
