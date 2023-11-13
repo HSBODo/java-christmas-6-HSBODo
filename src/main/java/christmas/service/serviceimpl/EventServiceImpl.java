@@ -70,6 +70,14 @@ public class EventServiceImpl implements EventService {
         return reservationInfoDto;
     }
 
+    private int specialDiscount(ReservationInfoDto reservationInfoDto){
+        final List<Integer> specialDay = new ArrayList<>(List.of(3,10,17,24,25,31));
+        if(specialDay.contains(reservationInfoDto.getReservationDay())){
+            return 1000;
+        }
+        return 0;
+    }
+
     private int findDayOfWeek(int year, int month, int day){
         //월요일(1)~일요일(7)
         LocalDate date = LocalDate.of(year, month, day);
