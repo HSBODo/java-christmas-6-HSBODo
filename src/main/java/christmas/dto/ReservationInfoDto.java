@@ -1,5 +1,6 @@
 package christmas.dto;
 
+import christmas.constant.DiscountTitle;
 import christmas.constant.Menu;
 
 import java.util.ArrayList;
