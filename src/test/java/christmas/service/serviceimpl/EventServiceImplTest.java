@@ -134,8 +134,34 @@ class EventServiceImplTest {
         final String discountCategory = "디저트";
 
         List<Menu> menus = new ArrayList<>();
-        Menu 초코케이크 = Menu.getMenu("양송이수프");
-        Menu 아이스크림 = Menu.getMenu("바비큐립");
+        Menu 양송이수프 = Menu.getMenu("양송이수프");
+        Menu 바비큐립 = Menu.getMenu("바비큐립");
+        Menu 레드와인 = Menu.getMenu("레드와인");
+        Menu 해산물파스타 = Menu.getMenu("해산물파스타");
+
+        menus.add(양송이수프);
+        menus.add(레드와인);
+        menus.add(해산물파스타);
+        menus.add(바비큐립);
+
+        long 디저트수량 = menus.stream()
+                .filter(menu -> menu.getCategory().contains(discountCategory)).count();
+        result = (int)디저트수량*discountCategoryPerDiscountPrice;
+
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("주말 할인은 메인 1개당 2023원 할인금액을 반환한다.")
+    void applyWeekendDiscount_정상케이스() {
+        Object result;
+
+        final int discountCategoryPerDiscountPrice = 2023;
+        final String discountCategory = "메인";
+
+        List<Menu> menus = new ArrayList<>();
+        Menu 초코케이크 = Menu.getMenu("초코케이크");
+        Menu 아이스크림 = Menu.getMenu("아이스크림");
         Menu 레드와인 = Menu.getMenu("레드와인");
         Menu 해산물파스타 = Menu.getMenu("해산물파스타");
 
@@ -146,10 +172,36 @@ class EventServiceImplTest {
 
         long 디저트수량 = menus.stream()
                 .filter(menu -> menu.getCategory().contains(discountCategory)).count();
+
+        result = (int)디저트수량*discountCategoryPerDiscountPrice;
+
+        assertThat(result).isEqualTo(2023*1);
+    }
+
+    @Test
+    @DisplayName("주말 할인은 메뉴에 메인메뉴가 없으면 할인금액 0원을 반환한다.")
+    void applyWeekendDiscount_예외케이스() {
+        Object result;
+
+        final int discountCategoryPerDiscountPrice = 2023;
+        final String discountCategory = "메인";
+
+        List<Menu> menus = new ArrayList<>();
+        Menu 제로콜라 = Menu.getMenu("제로콜라");
+        Menu 양송이수프 = Menu.getMenu("양송이수프");
+        Menu 레드와인 = Menu.getMenu("레드와인");
+        Menu 초코케이크 = Menu.getMenu("초코케이크");
+
+        menus.add(제로콜라);
+        menus.add(레드와인);
+        menus.add(양송이수프);
+        menus.add(초코케이크);
+
+        long 디저트수량 = menus.stream()
+                .filter(menu -> menu.getCategory().contains(discountCategory)).count();
         result = (int)디저트수량*discountCategoryPerDiscountPrice;
 
         assertThat(result).isEqualTo(0);
     }
-
 
 }
