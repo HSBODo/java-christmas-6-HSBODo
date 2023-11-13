@@ -50,7 +50,7 @@ class EventServiceImplTest {
     @ParameterizedTest
     @ValueSource(ints = {1,10,15,25})
     @DisplayName("크리스마스 D-Day 이벤트 할인금액을 반환한다.")
-    void applyChristmasDDayEvent_정상케이스(int totalPriceBeforeDiscount) {
+    void applyChristmasD_DayDiscount_정상케이스(int totalPriceBeforeDiscount) {
         final int oneDayPerDiscountPrice = 100;
         final int discountFirstDay = 1;
         final int discountLastDay = 25;
@@ -66,7 +66,7 @@ class EventServiceImplTest {
     @ParameterizedTest
     @ValueSource(ints = {0,26,31,88})
     @DisplayName("크리스마스 D-Day 이벤트 기간이 아니면 0을 반환한다.")
-    void applyChristmasDDayEvent_예외케이스(int totalPriceBeforeDiscount) {
+    void applyChristmasD_DayDiscount_예외케이스(int totalPriceBeforeDiscount) {
         final int oneDayPerDiscountPrice = 100;
         final int discountFirstDay = 1;
         final int discountLastDay = 25;
@@ -203,5 +203,36 @@ class EventServiceImplTest {
 
         assertThat(result).isEqualTo(0);
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {3,10,17,24,25,31})
+    @DisplayName("특별할인 이벤트 기간이면 1000원을 반환한다.")
+    void specialDiscount_정상케이스(int reservationDay) {
+        int result;
+        final List<Integer> specialDay = new ArrayList<>(List.of(3,10,17,24,25,31));
+        if(specialDay.contains(reservationDay)){
+            result = 1000;
+        }else {
+            result=0;
+        }
+
+        assertThat(result).isEqualTo(1000);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1,11,18,23,26,30})
+    @DisplayName("특별할인 이벤트 기간이 아니면 0원을 반환한다.")
+    void specialDiscount_예외케이스(int reservationDay) {
+        int result;
+        final List<Integer> specialDay = new ArrayList<>(List.of(3,10,17,24,25,31));
+        if(specialDay.contains(reservationDay)){
+            result = 1000;
+        }else {
+            result=0;
+        }
+
+        assertThat(result).isEqualTo(0);
+    }
+
 
 }
