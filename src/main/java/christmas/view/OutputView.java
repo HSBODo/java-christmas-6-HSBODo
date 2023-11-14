@@ -13,6 +13,7 @@ public class OutputView {
     private final String BADGE_TITLE = "<12월 이벤트 배지>";
     private final String UNIT = "개";
     private final String WON = "원";
+    private final String EMPTY = "없음";
 
     public void firstGreeting(Model model){
         System.out.println(model.getModel().get("firstGreeting"));
@@ -33,13 +34,18 @@ public class OutputView {
     }
 
     public void giveaway(Model model){
+        String giveaway = EMPTY;
+        if(model.getModel().get("giveaway")!=EMPTY){
+            giveaway = model.getModel().get("giveaway")+" "+(model.getModel().get("quantity")+UNIT);
+        }
         System.out.println(GIVEAWAY_TITLE);
-        System.out.println(model.getModel().get("giveWay")+" "+(model.getModel().get("quantity")+UNIT));
+        System.out.println(giveaway);
         System.out.println();
     }
 
     public void benefitsDetails(Model model){
         System.out.println(BENEFITS_DETAILS_TITLE);
+        if(model.getModel().size()==0) System.out.println(EMPTY);
         model.getModel().forEach((discountTitle, discountPrice) -> {
             System.out.println(discountTitle+": "+discountPrice+WON);
         });
@@ -48,13 +54,13 @@ public class OutputView {
 
     public void totalBenefitsPrice(Model model){
         System.out.println(TOTAL_BENEFITS_PRICE_TITLE);
-        System.out.println(model.getModel().get("totalBenefitsPrice"));
+        System.out.println(model.getModel().get("totalBenefitsPrice")+WON);
         System.out.println();
     }
 
     public void totalPriceAfterDiscount(Model model){
         System.out.println(TOTAL_PRICE_AFTER_DISCOUNT_TITLE);
-        System.out.println(model.getModel().get("totalPriceAfterDiscount"));
+        System.out.println(model.getModel().get("totalPriceAfterDiscount")+WON);
         System.out.println();
     }
 
