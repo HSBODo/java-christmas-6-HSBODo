@@ -1,6 +1,6 @@
 package christmas.constant;
 
-public enum DiscountTitle {
+public enum BenefitsTitle {
     크리스마스_디데이_할인("크리스마스 디데이 할인"),
     평일_할인("평일 할인"),
     주말_할인("주말 할인"),
@@ -9,7 +9,7 @@ public enum DiscountTitle {
 
     final private String title;
 
-    DiscountTitle(String title) {
+    BenefitsTitle(String title) {
         this.title = title;
     }
 
