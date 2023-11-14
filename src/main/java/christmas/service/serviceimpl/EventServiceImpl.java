@@ -9,7 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class EventServiceImpl implements EventService {
     private final int EVENT_APPLY_NECESSARY_PRICE = 10000;
@@ -58,12 +58,12 @@ public class EventServiceImpl implements EventService {
         final int discountCategoryPerDiscountPrice = 2023;
         final String discountCategory = "디저트";
         int dessertQuantity = 0;
+        Map<Menu, Integer> reservationMenusQuantity = reservationInfoDto.getReservationMenusQuantity();
 
-        List<Menu> desserts = reservationInfoDto.getReservationMenus().stream()
-                .filter(menu -> menu.getCategory().contains(discountCategory))
-                .collect(Collectors.toList());
-        for(Menu desert : desserts){
-            dessertQuantity += reservationInfoDto.getQuantityOf(desert.getName());
+        for (Menu menu: reservationMenusQuantity.keySet()){
+            if (menu.getCategory()==discountCategory){
+                dessertQuantity += reservationMenusQuantity.get(menu);
+            }
         }
         int discountPrice = dessertQuantity * discountCategoryPerDiscountPrice;
         reservationInfoDto.applyDiscountPrice(BenefitsTitle.평일_할인, discountPrice);
@@ -78,11 +78,12 @@ public class EventServiceImpl implements EventService {
         final String discountCategory = "메인";
         int mainQuantity = 0;
 
-        List<Menu> mains = reservationInfoDto.getReservationMenus().stream()
-                .filter(menu -> menu.getCategory().contains(discountCategory))
-                .collect(Collectors.toList());
-        for(Menu main : mains){
-            mainQuantity += reservationInfoDto.getQuantityOf(main.getName());
+        Map<Menu, Integer> reservationMenusQuantity = reservationInfoDto.getReservationMenusQuantity();
+
+        for (Menu menu: reservationMenusQuantity.keySet()){
+            if (menu.getCategory()==discountCategory){
+                mainQuantity += reservationMenusQuantity.get(menu);
+            }
         }
         int discountPrice = mainQuantity * discountCategoryPerDiscountPrice;
         reservationInfoDto.applyDiscountPrice(BenefitsTitle.주말_할인, discountPrice);

@@ -9,8 +9,7 @@ import java.util.Map;
 
 public class ReservationInfo {
     private int reservationDay;
-    private List<Menu> reservationMenus;
-    private Map<Menu,Integer> menusQuantity;
+    private Map<Menu,Integer> reservationMenusQuantity;
     private String totalPriceBeforeDiscount;
     private String totalPriceAfterDiscount;
     private String totalDiscountPrice;
@@ -20,10 +19,9 @@ public class ReservationInfo {
     private String badge;
 
 
-    public ReservationInfo(int reservationDay, List<Menu> reservationMenus, Map<Menu, Integer> menusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, String totalBenefitsPrice, Map<BenefitsTitle, String> benefitsDetails, String giveaway, String badge) {
+    public ReservationInfo(int reservationDay, Map<Menu, Integer> reservationMenusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, String totalBenefitsPrice, Map<BenefitsTitle, String> benefitsDetails, String giveaway, String badge) {
         this.reservationDay = reservationDay;
-        this.reservationMenus = reservationMenus;
-        this.menusQuantity = menusQuantity;
+        this.reservationMenusQuantity = reservationMenusQuantity;
         this.totalPriceBeforeDiscount = totalPriceBeforeDiscount;
         this.totalPriceAfterDiscount = totalPriceAfterDiscount;
         this.totalDiscountPrice = totalDiscountPrice;
@@ -35,7 +33,7 @@ public class ReservationInfo {
 
     public Model toOrderMenuModel(){
         Model model = new Model();
-        menusQuantity.forEach((menu, quantity) -> {
+        reservationMenusQuantity.forEach((menu, quantity) -> {
             model.addAttribute(menu.getName(),quantity);
         });
         return model;

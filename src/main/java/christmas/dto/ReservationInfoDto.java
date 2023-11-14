@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class ReservationInfoDto {
     private int reservationDay;
-    private List<Menu> reservationMenus;
     private Map<Menu,Integer> reservationMenusQuantity;
     private int totalPriceBeforeDiscount;
     private int totalDiscountPrice;
@@ -23,19 +22,8 @@ public class ReservationInfoDto {
     public ReservationInfoDto(String reservationDay, String reservationMenuAndQuantity) {
         this.reservationDay = Integer.parseInt(reservationDay);
         this.benefitsDetails = new HashMap<>();
-        initReservationMenus(reservationMenuAndQuantity);
         initReservationMenusQuantity(reservationMenuAndQuantity);
         initTotalPriceBeforeDiscount();
-    }
-
-    private void initReservationMenus(String reservationMenuAndQuantity){
-        reservationMenus = new ArrayList<>();
-        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
-        for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
-            String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
-            Menu menu = Menu.getMenu(menuAndQuantityHyphenSplit[0]);
-            reservationMenus.add(menu);
-        }
     }
 
     private void initReservationMenusQuantity(String reservationMenuAndQuantity){
@@ -57,10 +45,6 @@ public class ReservationInfoDto {
 
     public int getTotalPriceBeforeDiscount() {
         return totalPriceBeforeDiscount;
-    }
-
-    public List<Menu> getReservationMenus() {
-        return reservationMenus;
     }
 
     public int getQuantityOf(String menuName){
@@ -87,6 +71,10 @@ public class ReservationInfoDto {
         return giveaway;
     }
 
+    public Map<Menu, Integer> getReservationMenusQuantity() {
+        return reservationMenusQuantity;
+    }
+
     public void setBadge(String badge) {
         this.badge = badge;
     }
@@ -105,7 +93,6 @@ public class ReservationInfoDto {
 
         return new ReservationInfo(
                 reservationDay,
-                reservationMenus,
                 reservationMenusQuantity,
                 thousandUnitsComma(totalPriceBeforeDiscount),
                 thousandUnitsComma(getTotalPriceAfterDiscount()),
