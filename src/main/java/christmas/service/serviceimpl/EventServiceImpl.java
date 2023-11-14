@@ -37,28 +37,32 @@ public class EventServiceImpl implements EventService {
     }
 
     private ReservationInfoDto applyChristmasD_DayDiscount(ReservationInfoDto reservationInfoDto){
+        final BenefitsTitle benefitsTitle = BenefitsTitle.크리스마스_디데이_할인;
         final int oneDayPerDiscountPrice = 100;
         final int discountFirstDay = 1;
         final int discountLastDay = 25;
+
         int minDiscountPrice = 1000;
         int reservationDay = reservationInfoDto.getReservationDay();
 
         if(reservationDay > discountLastDay || reservationDay < discountFirstDay) return reservationInfoDto;
 
         int discountPrice = minDiscountPrice + ((reservationDay-1) * oneDayPerDiscountPrice);
-        reservationInfoDto.applyDiscountPrice(BenefitsTitle.크리스마스_디데이_할인, discountPrice);
+        reservationInfoDto.applyDiscountPrice(benefitsTitle, discountPrice);
 
         return reservationInfoDto;
     }
 
     private ReservationInfoDto applyWeekdayDiscount(ReservationInfoDto reservationInfoDto){
-        int reservationDay = reservationInfoDto.getReservationDay();
-        if(!isWeekday(reservationDay)) return reservationInfoDto;
-
+        final BenefitsTitle benefitsTitle = BenefitsTitle.평일_할인;
         final int discountCategoryPerDiscountPrice = 2023;
         final String discountCategory = "디저트";
-        int dessertQuantity = 0;
+
         Map<Menu, Integer> reservationMenusQuantity = reservationInfoDto.getReservationMenusQuantity();
+        int reservationDay = reservationInfoDto.getReservationDay();
+        int dessertQuantity = 0;
+
+        if(!isWeekday(reservationDay)) return reservationInfoDto;
 
         for (Menu menu: reservationMenusQuantity.keySet()){
             if (menu.getCategory()==discountCategory){
@@ -66,19 +70,20 @@ public class EventServiceImpl implements EventService {
             }
         }
         int discountPrice = dessertQuantity * discountCategoryPerDiscountPrice;
-        reservationInfoDto.applyDiscountPrice(BenefitsTitle.평일_할인, discountPrice);
+        reservationInfoDto.applyDiscountPrice(benefitsTitle, discountPrice);
         return reservationInfoDto;
     }
 
     private ReservationInfoDto applyWeekendDiscount(ReservationInfoDto reservationInfoDto){
-        int reservationDay = reservationInfoDto.getReservationDay();
-        if(!isWeekend(reservationDay)) return reservationInfoDto;
-
-        final int discountCategoryPerDiscountPrice = 2023;
+        final BenefitsTitle benefitsTitle = BenefitsTitle.주말_할인;
         final String discountCategory = "메인";
-        int mainQuantity = 0;
+        final int discountCategoryPerDiscountPrice = 2023;
 
         Map<Menu, Integer> reservationMenusQuantity = reservationInfoDto.getReservationMenusQuantity();
+        int reservationDay = reservationInfoDto.getReservationDay();
+        int mainQuantity = 0;
+
+        if(!isWeekend(reservationDay)) return reservationInfoDto;
 
         for (Menu menu: reservationMenusQuantity.keySet()){
             if (menu.getCategory()==discountCategory){
@@ -86,32 +91,42 @@ public class EventServiceImpl implements EventService {
             }
         }
         int discountPrice = mainQuantity * discountCategoryPerDiscountPrice;
-        reservationInfoDto.applyDiscountPrice(BenefitsTitle.주말_할인, discountPrice);
+        reservationInfoDto.applyDiscountPrice(benefitsTitle, discountPrice);
         return reservationInfoDto;
     }
 
     private ReservationInfoDto giveawayEvent(ReservationInfoDto reservationInfoDto){
+        final BenefitsTitle benefitsTitle = BenefitsTitle.증정_이벤트;
+        final Menu giveawayMenu = Menu.CHAMPAGNE;
+        final int giveawayQuantity = 1;
+        final int giveawayEventNecessaryPrice = 120000;
+
         int totalPriceBeforeDiscount = reservationInfoDto.getTotalPriceBeforeDiscount();
-        if(totalPriceBeforeDiscount>=120000){
-            reservationInfoDto.applyGiveaway(BenefitsTitle.증정_이벤트,Menu.CHAMPAGNE);
+
+        if(totalPriceBeforeDiscount>=giveawayEventNecessaryPrice){
+            reservationInfoDto.applyGiveaway(benefitsTitle,giveawayMenu,giveawayQuantity);
             return reservationInfoDto;
         }
         return reservationInfoDto;
     }
 
     private ReservationInfoDto specialDiscount(ReservationInfoDto reservationInfoDto){
+        final BenefitsTitle benefitsTitle = BenefitsTitle.특별_할인;
         final List<Integer> specialDay = new ArrayList<>(List.of(3,10,17,24,25,31));
         final int discountPrice = 1000;
-        if(specialDay.contains(reservationInfoDto.getReservationDay())){
-            reservationInfoDto.applyDiscountPrice(BenefitsTitle.특별_할인, discountPrice);
+
+        int reservationDay = reservationInfoDto.getReservationDay();
+
+        if(specialDay.contains(reservationDay)){
+            reservationInfoDto.applyDiscountPrice(benefitsTitle, discountPrice);
             return reservationInfoDto;
         }
         return reservationInfoDto;
     }
 
     private ReservationInfoDto badgeEvent(ReservationInfoDto reservationInfoDto){
-        int totalBenefitsPrice = reservationInfoDto.getTotalBenefitsPrice();
-
+        int totalBenefitsPrice = reservationInfoDto.getTotalBenefitsPrice()*-1;
+        System.out.println("totalBenefitsPrice = " + totalBenefitsPrice);
         if(totalBenefitsPrice>=20000){
             reservationInfoDto.setBadge("산타");
             return reservationInfoDto;

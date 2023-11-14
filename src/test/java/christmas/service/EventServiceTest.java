@@ -118,7 +118,7 @@ class EventServiceTest {
         assertThat(reservationInfoDto.getTotalPriceBeforeDiscount()).isEqualTo((35000*5)+(3000*1)+(15000*3));
         assertThat(reservationInfoDto.getTotalDiscountPrice()).isEqualTo(2023*5);
         assertThat(reservationInfoDto.getTotalPriceAfterDiscount()).isEqualTo(((35000*5)+(3000*1)+(15000*3)) - (2023*5));
-        assertThat(reservationInfoDto.getGiveaway()).isEqualTo("샴페인");
+        assertThat(reservationInfoDto.getGiveaway()).containsKey("샴페인");
     }
 
     @ParameterizedTest
@@ -132,9 +132,9 @@ class EventServiceTest {
 
         assertThat(reservationInfoDto.getTotalPriceBeforeDiscount()).isEqualTo((35000*5)+(3000*1)+(15000*3));
         assertThat(reservationInfoDto.getTotalDiscountPrice()).isEqualTo(2023*5);
+        assertThat(reservationInfoDto.getTotalBenefitsPrice()).isEqualTo((25000+(2023*5))*-1);
         assertThat(reservationInfoDto.getTotalPriceAfterDiscount()).isEqualTo(((35000*5)+(3000*1)+(15000*3)) - (2023*5));
-        assertThat(reservationInfoDto.getGiveaway()).isEqualTo("샴페인");
-        assertThat(reservationInfoDto.getBadge()).isEqualTo("트리");
+        assertThat(reservationInfoDto.getBadge()).isEqualTo("산타");
     }
 
 
