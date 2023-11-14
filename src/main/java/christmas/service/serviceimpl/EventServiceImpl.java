@@ -98,7 +98,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private ReservationInfoDto giveawayEvent(ReservationInfoDto reservationInfoDto){
-        reservationInfoDto.setGiveaway(BenefitsTitle.증정_이벤트,Menu.CHAMPAGNE);
+        reservationInfoDto.applyGiveaway(BenefitsTitle.증정_이벤트,Menu.CHAMPAGNE);
         return reservationInfoDto;
     }
 
