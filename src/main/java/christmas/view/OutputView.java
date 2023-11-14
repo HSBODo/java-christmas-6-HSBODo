@@ -48,7 +48,7 @@ public class OutputView {
 
     public void totalBenefitsPrice(Model model){
         System.out.println(TOTAL_BENEFITS_PRICE_TITLE);
-        System.out.println(model.getModel().get("totalDiscountPrice"));
+        System.out.println(model.getModel().get("totalBenefitsPrice"));
         System.out.println();
     }
 
