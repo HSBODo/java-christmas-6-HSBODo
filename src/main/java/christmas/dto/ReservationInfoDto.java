@@ -5,9 +5,7 @@ import christmas.constant.Menu;
 import christmas.domain.ReservationInfo;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ReservationInfoDto {
@@ -92,7 +90,6 @@ public class ReservationInfoDto {
     }
 
     public ReservationInfo toEntity(){
-
         return new ReservationInfo(
                 reservationDay,
                 reservationMenusQuantity,
