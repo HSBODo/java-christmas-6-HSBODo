@@ -139,7 +139,6 @@ public class EventServiceImpl implements EventService {
             reservationInfoDto.setBadge("별");
             return reservationInfoDto;
         }
-        reservationInfoDto.setBadge("없음");
         return reservationInfoDto;
     }
 
