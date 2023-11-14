@@ -1,6 +1,6 @@
 package christmas.dto;
 
-import christmas.constant.DiscountTitle;
+import christmas.constant.BenefitsTitle;
 import christmas.constant.Menu;
 import christmas.domain.ReservationInfo;
 
@@ -16,13 +16,13 @@ public class ReservationInfoDto {
     private Map<Menu,Integer> menusQuantity;
     private int totalPriceBeforeDiscount;
     private int totalDiscountPrice;
-    private Map<DiscountTitle,Integer> discountDetails;
+    private Map<BenefitsTitle,Integer> benefitsDetails;
     private String giveaway;
     private String badge;
 
     public ReservationInfoDto(String reservationDay, String reservationMenuAndQuantity) {
         this.reservationDay = Integer.parseInt(reservationDay);
-        this.discountDetails = new HashMap<>();
+        this.benefitsDetails = new HashMap<>();
         initReservationMenus(reservationMenuAndQuantity);
         initTotalPriceBeforeDiscount();
     }
@@ -82,14 +82,13 @@ public class ReservationInfoDto {
         this.badge = badge;
     }
 
-    public void setGiveaway(DiscountTitle discountTitle, Menu menu) {
+    public void setGiveaway(BenefitsTitle discountTitle, Menu menu) {
         this.giveaway = menu.getName();
-        totalDiscountPrice += menu.getPrice();
-        discountDetails.put(discountTitle,menu.getPrice());
+        benefitsDetails.put(discountTitle,menu.getPrice());
     }
 
-    public void applyDiscountPrice(DiscountTitle discountTitle, int discountPrice){
-        discountDetails.put(discountTitle,discountPrice);
+    public void applyDiscountPrice(BenefitsTitle discountTitle, int discountPrice){
+        benefitsDetails.put(discountTitle,discountPrice);
         totalDiscountPrice += discountPrice;
     }
 
@@ -102,7 +101,7 @@ public class ReservationInfoDto {
                 thousandUnitsComma(totalPriceBeforeDiscount),
                 thousandUnitsComma(getTotalPriceAfterDiscount()),
                 "-"+thousandUnitsComma(totalDiscountPrice),
-                discountPriceOfDiscountDetailsConvertThousandUnits(discountDetails),
+                discountPriceOfDiscountDetailsConvertThousandUnits(benefitsDetails),
                 giveaway,
                 badge
         );
@@ -112,8 +111,8 @@ public class ReservationInfoDto {
         return NumberFormat.getInstance().format(number);
     }
 
-    private Map<DiscountTitle,String> discountPriceOfDiscountDetailsConvertThousandUnits(Map<DiscountTitle,Integer> discountDetails){
-        Map<DiscountTitle,String> discountDetailsThousandUnits = new HashMap<>();
+    private Map<BenefitsTitle,String> discountPriceOfDiscountDetailsConvertThousandUnits(Map<BenefitsTitle,Integer> discountDetails){
+        Map<BenefitsTitle,String> discountDetailsThousandUnits = new HashMap<>();
         discountDetails.forEach((discountTitle, discountPrice) -> {
             discountDetailsThousandUnits.put(discountTitle,"-"+thousandUnitsComma(discountPrice));
         });

@@ -1,6 +1,6 @@
 package christmas.domain;
 
-import christmas.constant.DiscountTitle;
+import christmas.constant.BenefitsTitle;
 import christmas.constant.Menu;
 import christmas.model.Model;
 
@@ -14,19 +14,19 @@ public class ReservationInfo {
     private String totalPriceBeforeDiscount;
     private String totalPriceAfterDiscount;
     private String totalDiscountPrice;
-    private Map<DiscountTitle,String> discountDetails;
+    private Map<BenefitsTitle,String> benefitsDetails;
     private String giveaway;
     private String badge;
 
 
-    public ReservationInfo(int reservationDay, List<Menu> reservationMenus, Map<Menu, Integer> menusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, Map<DiscountTitle, String> discountDetails, String giveaway, String badge) {
+    public ReservationInfo(int reservationDay, List<Menu> reservationMenus, Map<Menu, Integer> menusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, Map<BenefitsTitle, String> benefitsDetails, String giveaway, String badge) {
         this.reservationDay = reservationDay;
         this.reservationMenus = reservationMenus;
         this.menusQuantity = menusQuantity;
         this.totalPriceBeforeDiscount = totalPriceBeforeDiscount;
         this.totalPriceAfterDiscount = totalPriceAfterDiscount;
         this.totalDiscountPrice = totalDiscountPrice;
-        this.discountDetails = discountDetails;
+        this.benefitsDetails = benefitsDetails;
         this.giveaway = giveaway;
         this.badge = badge;
     }
@@ -52,15 +52,15 @@ public class ReservationInfo {
         return model;
     }
 
-    public Model toDiscountDetailsModel(){
+    public Model toBenefitsDetailsModel(){
         Model model = new Model();
-        discountDetails.forEach((discountTitle, discountPrice) -> {
+        benefitsDetails.forEach((discountTitle, discountPrice) -> {
             model.addAttribute(discountTitle.getTitle(),discountPrice);
         });
         return model;
     }
 
-    public Model toTotalDiscountPriceModel(){
+    public Model toTotalBenefitsPriceModel(){
         Model model = new Model();
         model.addAttribute("totalDiscountPrice",totalDiscountPrice);
         return model;

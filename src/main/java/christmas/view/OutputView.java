@@ -7,8 +7,8 @@ public class OutputView {
     private final String ORDER_MENU_TITLE = "<주문 메뉴>";
     private final String TOTAL_PRICE_BEFORE_DISCOUNT_TITLE = "<할인 전 총주문 금액>";
     private final String GIVEAWAY_TITLE = "<증정 메뉴>";
-    private final String DISCOUNT_DETAILS_TITLE = "<혜택 내역>";
-    private final String TOTAL_DISCOUNT_PRICE_TITLE = "<총혜택 금액>";
+    private final String BENEFITS_DETAILS_TITLE = "<혜택 내역>";
+    private final String TOTAL_BENEFITS_PRICE_TITLE = "<총혜택 금액>";
     private final String TOTAL_PRICE_AFTER_DISCOUNT_TITLE = "<할인 후 예상 결제 금액>";
     private final String BADGE_TITLE = "<12월 이벤트 배지>";
     private final String UNIT = "개";
@@ -38,16 +38,16 @@ public class OutputView {
         System.out.println();
     }
 
-    public void discountDetails(Model model){
-        System.out.println(DISCOUNT_DETAILS_TITLE);
+    public void benefitsDetails(Model model){
+        System.out.println(BENEFITS_DETAILS_TITLE);
         model.getModel().forEach((discountTitle, discountPrice) -> {
             System.out.println(discountTitle+": "+discountPrice+WON);
         });
         System.out.println();
     }
 
-    public void totalDiscountPrice(Model model){
-        System.out.println(TOTAL_DISCOUNT_PRICE_TITLE);
+    public void totalBenefitsPrice(Model model){
+        System.out.println(TOTAL_BENEFITS_PRICE_TITLE);
         System.out.println(model.getModel().get("totalDiscountPrice"));
         System.out.println();
     }

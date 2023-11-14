@@ -1,6 +1,6 @@
 package christmas.service.serviceimpl;
 
-import christmas.constant.DiscountTitle;
+import christmas.constant.BenefitsTitle;
 import christmas.constant.Menu;
 import christmas.dto.ReservationInfoDto;
 import christmas.service.EventService;
@@ -24,20 +24,20 @@ public class EventServiceImpl implements EventService {
         if(!isApplyEvent(reservationInfoDto)) return reservationInfoDto;
 
         int discount = applyChristmasD_DayDiscount(reservationInfoDto);
-        reservationInfoDto.applyDiscountPrice(DiscountTitle.크리스마스_디데이_할인, discount);
+        reservationInfoDto.applyDiscountPrice(BenefitsTitle.크리스마스_디데이_할인, discount);
 
         if(isWeekday(reservationDay)) {
             int discountPrice = applyWeekdayDiscount(reservationInfoDto);
-            reservationInfoDto.applyDiscountPrice(DiscountTitle.평일_할인, discountPrice);
+            reservationInfoDto.applyDiscountPrice(BenefitsTitle.평일_할인, discountPrice);
         }
 
         if(isWeekend(reservationDay)) {
             int discountPrice = applyWeekendDiscount(reservationInfoDto);
-            reservationInfoDto.applyDiscountPrice(DiscountTitle.주말_할인, discountPrice);
+            reservationInfoDto.applyDiscountPrice(BenefitsTitle.주말_할인, discountPrice);
         }
 
         int discountPrice = specialDiscount(reservationInfoDto);
-        reservationInfoDto.applyDiscountPrice(DiscountTitle.특별_할인, discountPrice);
+        reservationInfoDto.applyDiscountPrice(BenefitsTitle.특별_할인, discountPrice);
 
         if(reservationPrice>=120000) reservationInfoDto = giveawayEvent(reservationInfoDto);
 
@@ -98,7 +98,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private ReservationInfoDto giveawayEvent(ReservationInfoDto reservationInfoDto){
-        reservationInfoDto.setGiveaway(DiscountTitle.증정_이벤트,Menu.CHAMPAGNE);
+        reservationInfoDto.setGiveaway(BenefitsTitle.증정_이벤트,Menu.CHAMPAGNE);
         return reservationInfoDto;
     }
 

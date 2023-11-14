@@ -72,8 +72,8 @@ public class ChristmasPromotionController {
         orderMenuModelAndView(reservationInfo.toOrderMenuModel());
         totalPriceBeforeDiscountModelAndView(reservationInfo.toTotalPriceBeforeDiscountModel());
         giveawayModelAndView(reservationInfo.toGiveawayModel());
-        discountDetailsModelAndView(reservationInfo.toDiscountDetailsModel());
-        totalDiscountPriceModelAndView(reservationInfo.toTotalDiscountPriceModel());
+        benefitsDetailsModelAndView(reservationInfo.toBenefitsDetailsModel());
+        totalBenefitsPriceModelAndView(reservationInfo.toTotalBenefitsPriceModel());
         totalPriceAfterDiscount(reservationInfo.toTotalPriceAfterDiscountModel());
         badgeModelAndView(reservationInfo.toBadgeModel());
     }
@@ -90,12 +90,12 @@ public class ChristmasPromotionController {
         outputView.giveaway(model);
     }
 
-    private void discountDetailsModelAndView(Model model){
-        outputView.discountDetails(model);
+    private void benefitsDetailsModelAndView(Model model){
+        outputView.benefitsDetails(model);
     }
 
-    private void totalDiscountPriceModelAndView(Model model){
-        outputView.totalDiscountPrice(model);
+    private void totalBenefitsPriceModelAndView(Model model){
+        outputView.totalBenefitsPrice(model);
     }
 
     private void totalPriceAfterDiscount(Model model){
