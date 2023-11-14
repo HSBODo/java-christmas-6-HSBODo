@@ -13,7 +13,7 @@ import java.util.Map;
 public class ReservationInfoDto {
     private int reservationDay;
     private List<Menu> reservationMenus;
-    private Map<Menu,Integer> menusQuantity;
+    private Map<Menu,Integer> reservationMenusQuantity;
     private int totalPriceBeforeDiscount;
     private int totalDiscountPrice;
     private Map<BenefitsTitle,Integer> benefitsDetails;
@@ -24,24 +24,33 @@ public class ReservationInfoDto {
         this.reservationDay = Integer.parseInt(reservationDay);
         this.benefitsDetails = new HashMap<>();
         initReservationMenus(reservationMenuAndQuantity);
+        initReservationMenusQuantity(reservationMenuAndQuantity);
         initTotalPriceBeforeDiscount();
     }
 
     private void initReservationMenus(String reservationMenuAndQuantity){
         reservationMenus = new ArrayList<>();
-        menusQuantity = new HashMap<>();
+        String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
+        for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+            String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
+            Menu menu = Menu.getMenu(menuAndQuantityHyphenSplit[0]);
+            reservationMenus.add(menu);
+        }
+    }
+
+    private void initReservationMenusQuantity(String reservationMenuAndQuantity){
+        reservationMenusQuantity = new HashMap<>();
         String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
         for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
             String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
             Menu menu = Menu.getMenu(menuAndQuantityHyphenSplit[0]);
             int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
-            reservationMenus.add(menu);
-            menusQuantity.put(menu,quantity);
+            reservationMenusQuantity.put(menu,quantity);
         }
     }
 
     private void initTotalPriceBeforeDiscount(){
-        menusQuantity.forEach((menu, quantity) -> {
+        reservationMenusQuantity.forEach((menu, quantity) -> {
             totalPriceBeforeDiscount += menu.getPrice() * quantity;
         });
     }
@@ -55,7 +64,7 @@ public class ReservationInfoDto {
     }
 
     public int getQuantityOf(String menuName){
-        return menusQuantity.get(Menu.getMenu(menuName));
+        return reservationMenusQuantity.get(Menu.getMenu(menuName));
     }
 
     public int getReservationDay() {
@@ -97,7 +106,7 @@ public class ReservationInfoDto {
         return new ReservationInfo(
                 reservationDay,
                 reservationMenus,
-                menusQuantity,
+                reservationMenusQuantity,
                 thousandUnitsComma(totalPriceBeforeDiscount),
                 thousandUnitsComma(getTotalPriceAfterDiscount()),
                 "-"+thousandUnitsComma(totalDiscountPrice),
