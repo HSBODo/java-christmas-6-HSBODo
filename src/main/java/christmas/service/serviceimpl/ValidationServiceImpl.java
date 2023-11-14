@@ -32,16 +32,12 @@ public class ValidationServiceImpl implements ValidationService {
     @Override
     public boolean isValidReservationMenuAndQuantity(String reservationMenuAndQuantity) {
         try {
-            //입력 형식 검증
             isFormat(reservationMenuAndQuantity);
-            //입력 수량 검증
             isDigitQuantity(reservationMenuAndQuantity);
             isRangeQuantity(reservationMenuAndQuantity,RESERVATION_QUANTITY_RANGE_START,RESERVATION_QUANTITY_RANGE_END);
-            //입력 메뉴 검증
             isMenu(reservationMenuAndQuantity);
             isDuplicationMenu(reservationMenuAndQuantity);
             isNotOnlyBeverage(reservationMenuAndQuantity);
-
             return true;
         }catch (Exception e){
             System.out.println(ChristmasPromotionException.INPUT_NOT_VALID_MENU_QUANTITY.getMessage());
@@ -59,7 +55,6 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     private boolean isRangeReservationDate(int reservationDate,int start,int end){
-
         if(start <= reservationDate && end >= reservationDate){
             return true;
         }
@@ -102,11 +97,9 @@ public class ValidationServiceImpl implements ValidationService {
             }
             totalQuantity += quantity;
         }
-
         if(totalQuantity>end){
             throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
         }
-
         return true;
     }
 
