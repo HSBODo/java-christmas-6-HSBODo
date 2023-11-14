@@ -4,7 +4,6 @@ import christmas.constant.BenefitsTitle;
 import christmas.constant.Menu;
 import christmas.model.Model;
 
-import java.util.List;
 import java.util.Map;
 
 public class ReservationInfo {
@@ -15,11 +14,11 @@ public class ReservationInfo {
     private String totalDiscountPrice;
     private String totalBenefitsPrice;
     private Map<BenefitsTitle,String> benefitsDetails;
-    private String giveaway;
+    private Map<String,Integer> giveaway;
     private String badge;
 
 
-    public ReservationInfo(int reservationDay, Map<Menu, Integer> reservationMenusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, String totalBenefitsPrice, Map<BenefitsTitle, String> benefitsDetails, String giveaway, String badge) {
+    public ReservationInfo(int reservationDay, Map<Menu, Integer> reservationMenusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, String totalBenefitsPrice, Map<BenefitsTitle, String> benefitsDetails, Map<String,Integer> giveaway, String badge) {
         this.reservationDay = reservationDay;
         this.reservationMenusQuantity = reservationMenusQuantity;
         this.totalPriceBeforeDiscount = totalPriceBeforeDiscount;
@@ -47,8 +46,10 @@ public class ReservationInfo {
 
     public Model toGiveawayModel(){
         Model model = new Model();
-        model.addAttribute("giveWay",giveaway);
-        model.addAttribute("quantity",1);
+        giveaway.forEach((giveaway, quantity) -> {
+            model.addAttribute("giveaway",giveaway);
+            model.addAttribute("quantity",quantity);
+        });
         return model;
     }
 
@@ -62,7 +63,6 @@ public class ReservationInfo {
 
     public Model toTotalBenefitsPriceModel(){
         Model model = new Model();
-
         model.addAttribute("totalBenefitsPrice",totalBenefitsPrice);
         return model;
     }
