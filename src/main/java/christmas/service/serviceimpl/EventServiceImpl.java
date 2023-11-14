@@ -111,17 +111,17 @@ public class EventServiceImpl implements EventService {
     }
 
     private ReservationInfoDto badgeEvent(ReservationInfoDto reservationInfoDto){
-        int totalDiscountPrice = reservationInfoDto.getTotalDiscountPrice();
+        int totalBenefitsPrice = reservationInfoDto.getTotalBenefitsPrice();
 
-        if(totalDiscountPrice>=20000){
+        if(totalBenefitsPrice>=20000){
             reservationInfoDto.setBadge("산타");
             return reservationInfoDto;
         }
-        if(totalDiscountPrice>=10000){
+        if(totalBenefitsPrice>=10000){
             reservationInfoDto.setBadge("트리");
             return reservationInfoDto;
         }
-        if(totalDiscountPrice>=5000) {
+        if(totalBenefitsPrice>=5000) {
             reservationInfoDto.setBadge("별");
             return reservationInfoDto;
         }

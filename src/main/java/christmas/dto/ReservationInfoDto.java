@@ -101,7 +101,7 @@ public class ReservationInfoDto {
                 thousandUnitsComma(totalPriceBeforeDiscount),
                 thousandUnitsComma(getTotalPriceAfterDiscount()),
                 "-"+thousandUnitsComma(totalDiscountPrice),
-                "-"+totalBenefitsPrice(),
+                "-"+thousandUnitsComma(getTotalBenefitsPrice()),
                 benefitsPriceOfBenefitsDetailsConvertThousandUnits(benefitsDetails),
                 giveaway,
                 badge
@@ -120,11 +120,11 @@ public class ReservationInfoDto {
         return discountDetailsThousandUnits;
     }
 
-    private String totalBenefitsPrice(){
+    public int getTotalBenefitsPrice(){
         int benefitsPrice = 0;
         for(BenefitsTitle benefitsTitle : benefitsDetails.keySet()){
             benefitsPrice += benefitsDetails.get(benefitsTitle);
         }
-        return thousandUnitsComma(benefitsPrice);
+        return benefitsPrice;
     }
 }
