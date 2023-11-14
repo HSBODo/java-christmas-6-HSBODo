@@ -14,18 +14,20 @@ public class ReservationInfo {
     private String totalPriceBeforeDiscount;
     private String totalPriceAfterDiscount;
     private String totalDiscountPrice;
+    private String totalBenefitsPrice;
     private Map<BenefitsTitle,String> benefitsDetails;
     private String giveaway;
     private String badge;
 
 
-    public ReservationInfo(int reservationDay, List<Menu> reservationMenus, Map<Menu, Integer> menusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, Map<BenefitsTitle, String> benefitsDetails, String giveaway, String badge) {
+    public ReservationInfo(int reservationDay, List<Menu> reservationMenus, Map<Menu, Integer> menusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, String totalBenefitsPrice, Map<BenefitsTitle, String> benefitsDetails, String giveaway, String badge) {
         this.reservationDay = reservationDay;
         this.reservationMenus = reservationMenus;
         this.menusQuantity = menusQuantity;
         this.totalPriceBeforeDiscount = totalPriceBeforeDiscount;
         this.totalPriceAfterDiscount = totalPriceAfterDiscount;
         this.totalDiscountPrice = totalDiscountPrice;
+        this.totalBenefitsPrice = totalBenefitsPrice;
         this.benefitsDetails = benefitsDetails;
         this.giveaway = giveaway;
         this.badge = badge;
@@ -54,15 +56,16 @@ public class ReservationInfo {
 
     public Model toBenefitsDetailsModel(){
         Model model = new Model();
-        benefitsDetails.forEach((discountTitle, discountPrice) -> {
-            model.addAttribute(discountTitle.getTitle(),discountPrice);
+        benefitsDetails.forEach((benefitsTitle, benefitsPrice) -> {
+            model.addAttribute(benefitsTitle.getTitle(),benefitsPrice);
         });
         return model;
     }
 
     public Model toTotalBenefitsPriceModel(){
         Model model = new Model();
-        model.addAttribute("totalDiscountPrice",totalDiscountPrice);
+
+        model.addAttribute("totalBenefitsPrice",totalBenefitsPrice);
         return model;
     }
 
