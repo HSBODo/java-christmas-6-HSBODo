@@ -16,7 +16,6 @@ public class ValidationServiceImpl implements ValidationService {
     private final int RESERVATION_QUANTITY_RANGE_END = 20;
     private final String[] NECESSARY_INCLUDE_MENU={"디저트","메인","애피타이저"};
 
-
     @Override
     public boolean isValidReservationDay(String reservationDate){
         try {
