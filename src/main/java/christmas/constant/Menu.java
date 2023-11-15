@@ -2,7 +2,6 @@ package christmas.constant;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public enum Menu {
@@ -39,7 +38,6 @@ public enum Menu {
                 .filter(menu ->
                         menu.getName().equals(name))
                 .collect(Collectors.toList());
-
         return menus.get(MENU_INDEX);
     }
 
