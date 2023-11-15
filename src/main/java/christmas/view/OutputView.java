@@ -19,6 +19,11 @@ public class OutputView {
         System.out.println(model.getModel().get("firstGreeting"));
     }
 
+    public void eventBenefitsPreview(Model model){
+        System.out.println(model.getModel().get("preview"));
+        System.out.println();
+    }
+
     public void orderMenu(Model model){
         System.out.println(ORDER_MENU_TITLE);
         model.getModel().forEach((menuName, quantity) ->{
