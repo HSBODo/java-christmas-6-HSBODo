@@ -585,6 +585,15 @@ EventService를 인터페이스를 활용하여 구현하였습니다.
 이번 미션에서는 인터페이스를 활용하지 않아도 되지만 학습을 위해 활용하였습니다.  
 인터페이스를 활용하여 틀을 잡아 놓을 수 있어 개발 시적전에 추상화하여 생각해 볼 수 있었습니다.  
 만약 1월부터 12월까지 이벤트가 있었다면 이벤트들을 추상화하여 생각해 보고 구현 할 수 있었을 것입니다.  
+```java
+public interface EventService {
+    public ReservationInfoDto applyDecemberEvent(ReservationInfoDto reservationInfoDto);
+    public ReservationInfoDto applyJanuaryEvent(ReservationInfoDto reservationInfoDto);
+    public ReservationInfoDto applyFebruaryEvent(ReservationInfoDto reservationInfoDto);
+    public ReservationInfoDto applyMarchEvent(ReservationInfoDto reservationInfoDto);
+    ...
+}
+```
 이벤트 내용이 변경된다고하면 인터페이스의 다형성과 유연성 특징 때문에으로 변경된 내용의 인터페이스를 구현하여 교환할수 있습니다.  
 단위 테스트를 할 때도 구현체를 교환해가며 테스트를 할 수 있었습니다.  
 
