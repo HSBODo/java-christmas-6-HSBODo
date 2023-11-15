@@ -1,6 +1,5 @@
 package christmas.model;
 
-import christmas.view.OutputView;
 
 import java.util.HashMap;
 import java.util.Map;
