@@ -30,6 +30,13 @@ public class ReservationInfo {
         this.badge = badge;
     }
 
+    public Model toEventBenefitsPreviewModel(){
+        final String PREVIEW = "12월 "+reservationDay+"일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!";
+        Model model = new Model();
+        model.addAttribute("preview",PREVIEW);
+        return model;
+    }
+
     public Model toOrderMenuModel(){
         Model model = new Model();
         reservationMenusQuantity.forEach((menu, quantity) -> {
