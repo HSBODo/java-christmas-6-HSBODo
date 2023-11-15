@@ -24,12 +24,12 @@ public class ChristmasPromotionController {
         this.eventService = new EventServiceImpl();
     }
 
-    public void reservation(){
+    public void reservation() {
         firstGreetingModelAndView();
 
         String reservationDay = inputReservationDay();
         String reservationMenuAndQuantity = inputReservationMenuAndQuantity();
-        ReservationInfoDto reservationInfoDto = new ReservationInfoDto(reservationDay,reservationMenuAndQuantity);
+        ReservationInfoDto reservationInfoDto = new ReservationInfoDto(reservationDay, reservationMenuAndQuantity);
 
         reservationInfoDto = eventService.applyDecemberEvent(reservationInfoDto);
         ReservationInfo reservationInfo = reservationInfoDto.toEntity();
@@ -37,11 +37,11 @@ public class ChristmasPromotionController {
         reservationResult(reservationInfo);
     }
 
-    private String inputReservationDay(){
+    private String inputReservationDay() {
         boolean isValid = false;
         String reservationDay = null;
 
-        while (!isValid){
+        while (!isValid) {
             reservationDay = inputView.inputReservationDay();
             isValid = validationService.isValidReservationDay(reservationDay);
         }
@@ -49,11 +49,11 @@ public class ChristmasPromotionController {
         return reservationDay;
     }
 
-    private String inputReservationMenuAndQuantity(){
+    private String inputReservationMenuAndQuantity() {
         boolean isValid = false;
         String reservationMenuAndQuantity = null;
 
-        while (!isValid){
+        while (!isValid) {
             reservationMenuAndQuantity = inputView.inputReservationMenuAndQuantity();
             isValid = validationService.isValidReservationMenuAndQuantity(reservationMenuAndQuantity);
         }
@@ -61,10 +61,10 @@ public class ChristmasPromotionController {
         return reservationMenuAndQuantity;
     }
 
-    private void firstGreetingModelAndView(){
-        final String FIRST_GREETING_MESSAGE  = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
+    private void firstGreetingModelAndView() {
+        final String FIRST_GREETING_MESSAGE = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
         Model model = new Model();
-        model.addAttribute("firstGreeting",FIRST_GREETING_MESSAGE );
+        model.addAttribute("firstGreeting", FIRST_GREETING_MESSAGE);
         outputView.firstGreeting(model);
     }
 
@@ -79,35 +79,35 @@ public class ChristmasPromotionController {
         badgeModelAndView(reservationInfo.toBadgeModel());
     }
 
-    private void eventBenefitsPreviewModelAndView(Model model){
+    private void eventBenefitsPreviewModelAndView(Model model) {
         outputView.eventBenefitsPreview(model);
     }
 
-    private void orderMenuModelAndView(Model model){
+    private void orderMenuModelAndView(Model model) {
         outputView.orderMenu(model);
     }
 
-    private void totalPriceBeforeDiscountModelAndView(Model model){
+    private void totalPriceBeforeDiscountModelAndView(Model model) {
         outputView.totalPriceBeforeDiscount(model);
     }
 
-    private void giveawayModelAndView(Model model){
+    private void giveawayModelAndView(Model model) {
         outputView.giveaway(model);
     }
 
-    private void benefitsDetailsModelAndView(Model model){
+    private void benefitsDetailsModelAndView(Model model) {
         outputView.benefitsDetails(model);
     }
 
-    private void totalBenefitsPriceModelAndView(Model model){
+    private void totalBenefitsPriceModelAndView(Model model) {
         outputView.totalBenefitsPrice(model);
     }
 
-    private void totalPriceAfterDiscount(Model model){
+    private void totalPriceAfterDiscount(Model model) {
         outputView.totalPriceAfterDiscount(model);
     }
 
-    private void badgeModelAndView(Model model){
+    private void badgeModelAndView(Model model) {
         outputView.badge(model);
     }
 

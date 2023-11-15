@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum DayOfTheWeek {
-    월요일(1,"평일"),
-    화요일(2,"평일"),
-    수요일(3,"평일"),
-    목요일(4,"평일"),
-    금요일(5,"주말"),
-    토요일(6,"주말"),
-    일요일(7,"평일")
-    ;
+    월요일(1, "평일"),
+    화요일(2, "평일"),
+    수요일(3, "평일"),
+    목요일(4, "평일"),
+    금요일(5, "주말"),
+    토요일(6, "주말"),
+    일요일(7, "평일");
     private static final int DAY_OF_THE_WEEK_INDEX = 0;
 
     final private int value;
@@ -31,7 +30,7 @@ public enum DayOfTheWeek {
         return DayOfTheWeeks.get(DAY_OF_THE_WEEK_INDEX);
     }
 
-    public int getValue(){
+    public int getValue() {
         return value;
     }
 

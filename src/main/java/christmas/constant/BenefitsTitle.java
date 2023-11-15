@@ -14,7 +14,7 @@ public enum BenefitsTitle {
         this.title = title;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 }

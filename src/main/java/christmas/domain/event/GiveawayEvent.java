@@ -17,6 +17,6 @@ public class GiveawayEvent extends Event {
 
     @Override
     public void apply(ReservationInfoDto reservationInfoDto) {
-        reservationInfoDto.applyGiveaway(benefitsTitle,GIVEAWAY_MENU,GIVEAWAY_QUANTITY);
+        reservationInfoDto.applyGiveaway(benefitsTitle, GIVEAWAY_MENU, GIVEAWAY_QUANTITY);
     }
 }

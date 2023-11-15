@@ -10,34 +10,34 @@ import java.util.Map;
 
 public class ReservationInfoDto {
     private int reservationDay;
-    private Map<Menu,Integer> reservationMenusQuantity;
+    private Map<Menu, Integer> reservationMenusQuantity;
     private int totalPriceBeforeDiscount;
     private int totalDiscountPrice;
-    private Map<BenefitsTitle,Integer> benefitsDetails;
-    private Map<String,Integer> giveaway;
+    private Map<BenefitsTitle, Integer> benefitsDetails;
+    private Map<String, Integer> giveaway;
     private String badge;
 
     public ReservationInfoDto(String reservationDay, String reservationMenuAndQuantity) {
         this.reservationDay = Integer.parseInt(reservationDay);
         this.benefitsDetails = new HashMap<>();
-        this.giveaway = new HashMap<>(Map.of("없음",0));
+        this.giveaway = new HashMap<>(Map.of("없음", 0));
         this.badge = "없음";
         initReservationMenusQuantity(reservationMenuAndQuantity);
         initTotalPriceBeforeDiscount();
     }
 
-    private void initReservationMenusQuantity(String reservationMenuAndQuantity){
+    private void initReservationMenusQuantity(String reservationMenuAndQuantity) {
         reservationMenusQuantity = new HashMap<>();
         String[] reservationMenuAndQuantityCommaSplit = reservationMenuAndQuantity.split(",");
-        for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
+        for (String menuAndQuantity : reservationMenuAndQuantityCommaSplit) {
             String[] menuAndQuantityHyphenSplit = menuAndQuantity.split("-");
             Menu menu = Menu.getMenu(menuAndQuantityHyphenSplit[0]);
             int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
-            reservationMenusQuantity.put(menu,quantity);
+            reservationMenusQuantity.put(menu, quantity);
         }
     }
 
-    private void initTotalPriceBeforeDiscount(){
+    private void initTotalPriceBeforeDiscount() {
         reservationMenusQuantity.forEach((menu, quantity) -> {
             totalPriceBeforeDiscount += menu.getPrice() * quantity;
         });
@@ -47,7 +47,7 @@ public class ReservationInfoDto {
         return totalPriceBeforeDiscount;
     }
 
-    public int getQuantityOf(String menuName){
+    public int getQuantityOf(String menuName) {
         return reservationMenusQuantity.get(Menu.getMenu(menuName));
     }
 
@@ -56,7 +56,7 @@ public class ReservationInfoDto {
     }
 
     public int getTotalPriceAfterDiscount() {
-        return  totalPriceBeforeDiscount - totalDiscountPrice;
+        return totalPriceBeforeDiscount - totalDiscountPrice;
     }
 
     public int getTotalDiscountPrice() {
@@ -79,17 +79,17 @@ public class ReservationInfoDto {
         this.badge = badge;
     }
 
-    public void applyGiveaway(BenefitsTitle discountTitle, Menu menu,int quantity) {
-        this.giveaway = Map.of(menu.getName(),quantity);
-        benefitsDetails.put(discountTitle,-menu.getPrice());
+    public void applyGiveaway(BenefitsTitle discountTitle, Menu menu, int quantity) {
+        this.giveaway = Map.of(menu.getName(), quantity);
+        benefitsDetails.put(discountTitle, -menu.getPrice());
     }
 
-    public void applyDiscountPrice(BenefitsTitle discountTitle, int discountPrice){
-        benefitsDetails.put(discountTitle,-discountPrice);
+    public void applyDiscountPrice(BenefitsTitle discountTitle, int discountPrice) {
+        benefitsDetails.put(discountTitle, -discountPrice);
         totalDiscountPrice += discountPrice;
     }
 
-    public ReservationInfo toEntity(){
+    public ReservationInfo toEntity() {
         return new ReservationInfo(
                 reservationDay,
                 reservationMenusQuantity,
@@ -103,22 +103,22 @@ public class ReservationInfoDto {
         );
     }
 
-    private String thousandUnitsComma(int number){
+    private String thousandUnitsComma(int number) {
         return NumberFormat.getInstance().format(number);
     }
 
-    private Map<BenefitsTitle,String> benefitsPriceOfBenefitsDetailsConvertThousandUnits(Map<BenefitsTitle,Integer> benefitsDetails){
-        Map<BenefitsTitle,String> discountDetailsThousandUnits = new HashMap<>();
+    private Map<BenefitsTitle, String> benefitsPriceOfBenefitsDetailsConvertThousandUnits(Map<BenefitsTitle, Integer> benefitsDetails) {
+        Map<BenefitsTitle, String> discountDetailsThousandUnits = new HashMap<>();
 
         benefitsDetails.forEach((benefitsTitle, benefitsPrice) -> {
-            discountDetailsThousandUnits.put(benefitsTitle,thousandUnitsComma(benefitsPrice));
+            discountDetailsThousandUnits.put(benefitsTitle, thousandUnitsComma(benefitsPrice));
         });
         return discountDetailsThousandUnits;
     }
 
-    public int getTotalBenefitsPrice(){
+    public int getTotalBenefitsPrice() {
         int benefitsPrice = 0;
-        for(BenefitsTitle benefitsTitle : benefitsDetails.keySet()){
+        for (BenefitsTitle benefitsTitle : benefitsDetails.keySet()) {
             benefitsPrice += benefitsDetails.get(benefitsTitle);
         }
         return benefitsPrice;

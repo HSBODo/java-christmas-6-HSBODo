@@ -17,7 +17,7 @@ public class ChristmasDdayDiscount extends Event {
     @Override
     public void apply(ReservationInfoDto reservationInfoDto) {
         int reservationDay = reservationInfoDto.getReservationDay();
-        int discountPrice = minDiscountPrice + ((reservationDay-1) * ONE_DAY_PER_DISCOUNT_PRICE);
+        int discountPrice = minDiscountPrice + ((reservationDay - 1) * ONE_DAY_PER_DISCOUNT_PRICE);
         reservationInfoDto.applyDiscountPrice(benefitsTitle, discountPrice);
     }
 }

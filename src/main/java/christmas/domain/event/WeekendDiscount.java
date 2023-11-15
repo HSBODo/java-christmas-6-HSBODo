@@ -21,12 +21,12 @@ public class WeekendDiscount extends Event {
     public void apply(ReservationInfoDto reservationInfoDto) {
         Map<Menu, Integer> reservationMenusQuantity = reservationInfoDto.getReservationMenusQuantity();
         int categoryMenuQuantity = 0;
-        for (Menu menu: reservationMenusQuantity.keySet()){
-            if (menu.getCategory()==DISCOUNT_CATEGORY){
+        for (Menu menu : reservationMenusQuantity.keySet()) {
+            if (menu.getCategory() == DISCOUNT_CATEGORY) {
                 categoryMenuQuantity += reservationMenusQuantity.get(menu);
             }
         }
-        if(categoryMenuQuantity == 0) return;
+        if (categoryMenuQuantity == 0) return;
         int discountPrice = categoryMenuQuantity * DISCOUNT_CATEGORY_PER_DISCOUNT_PRICE;
         reservationInfoDto.applyDiscountPrice(benefitsTitle, discountPrice);
     }
