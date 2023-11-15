@@ -30,19 +30,16 @@ public class EventServiceImpl implements EventService {
 
     private boolean isApplyEvent(ReservationInfoDto reservationInfoDto){
         int totalPriceBeforeDiscount = reservationInfoDto.getTotalPriceBeforeDiscount();
-
-        if(totalPriceBeforeDiscount<EVENT_APPLY_NECESSARY_PRICE) return false;
-
-        return true;
+        return totalPriceBeforeDiscount >= EVENT_APPLY_NECESSARY_PRICE;
     }
 
     private void applyChristmasD_DayDiscount(ReservationInfoDto reservationInfoDto){
-        final int discountFirstDay = 1;
-        final int discountLastDay = 25;
+        final int DISCOUNT_FIRST_DAY = 1;
+        final int DISCOUNT_LAST_DAY = 25;
 
         int reservationDay = reservationInfoDto.getReservationDay();
         //적용조건
-        if(reservationDay > discountLastDay || reservationDay < discountFirstDay) return;
+        if(reservationDay > DISCOUNT_LAST_DAY || reservationDay < DISCOUNT_FIRST_DAY) return;
 
         new ChristmasDdayDiscount().apply(reservationInfoDto);
     }
@@ -60,10 +57,11 @@ public class EventServiceImpl implements EventService {
     }
 
     private void giveawayEvent(ReservationInfoDto reservationInfoDto){
-        final int giveawayEventNecessaryTotalPriceBeforeDiscount = 120000;
+        final int GIVEAWAY_EVENT_NECESSARY_TOTAL_PRICE_BEFORE_DISCOUNT = 120000;
+
         int totalPriceBeforeDiscount = reservationInfoDto.getTotalPriceBeforeDiscount();
         //적용조건
-        if(totalPriceBeforeDiscount>=giveawayEventNecessaryTotalPriceBeforeDiscount) new GiveawayEvent().apply(reservationInfoDto);
+        if(totalPriceBeforeDiscount>=GIVEAWAY_EVENT_NECESSARY_TOTAL_PRICE_BEFORE_DISCOUNT) new GiveawayEvent().apply(reservationInfoDto);
     }
 
     private void specialDiscount(ReservationInfoDto reservationInfoDto){
@@ -86,14 +84,12 @@ public class EventServiceImpl implements EventService {
 
     private boolean isWeekday(int day){
         DayOfTheWeek dayOfWeek = findDayOfWeek(EVENT_APPLY_YEAR, EVENT_APPLY_MONTH, day);
-        if(dayOfWeek.getCategory() == "평일") return true;
-        return false;
+        return "평일".equals(dayOfWeek.getCategory());
     }
 
     private boolean isWeekend(int day){
         DayOfTheWeek dayOfWeek = findDayOfWeek(EVENT_APPLY_YEAR, EVENT_APPLY_MONTH, day);
-        if(dayOfWeek.getCategory() == "주말") return true;
-        return false;
+        return "주말".equals(dayOfWeek.getCategory());
     }
 
 
