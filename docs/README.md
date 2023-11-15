@@ -274,3 +274,346 @@
     * 혜택 금액이 5천 원 이상: 별
     * 혜택 금액이 1만 원 이상: 트리
     * 혜택 금액이 2만 원 이상: 산타
+## 📮 기능 구현
+####  MVC 디자인 패턴을 적용하여 클래스(객체)를 분리하고, 도메인 로직에 집중하는 방향으로 구현해보자.
+
+### MVC 디자인 패턴의 큰 그림 그리기
+![img_1.png](img_1.png)
+
+---
+#### View
+뷰 객체는 컨트롤러에서 받은 모델 객체의 데이터를 기반으로 화면을 보여주는 역할을 하도록 구현하였습니다.
+```java
+public class OutputView {
+
+  private final String ORDER_MENU_TITLE = "<주문 메뉴>";
+  private final String TOTAL_PRICE_BEFORE_DISCOUNT_TITLE = "<할인 전 총주문 금액>";
+  private final String GIVEAWAY_TITLE = "<증정 메뉴>";
+  private final String BENEFITS_DETAILS_TITLE = "<혜택 내역>";
+  private final String TOTAL_BENEFITS_PRICE_TITLE = "<총혜택 금액>";
+  private final String TOTAL_PRICE_AFTER_DISCOUNT_TITLE = "<할인 후 예상 결제 금액>";
+  private final String BADGE_TITLE = "<12월 이벤트 배지>";
+  private final String UNIT = "개";
+  private final String WON = "원";
+  private final String EMPTY = "없음";
+
+  public void firstGreeting(Model model) {
+    System.out.println(model.getModel().get("firstGreeting"));
+  }
+
+  public void eventBenefitsPreview(Model model) {
+    System.out.println(model.getModel().get("preview"));
+    System.out.println();
+  }
+  ...
+}
+```
+---
+#### Model
+모델 객체는 데이터를 담는 역할을 하도록 구현하였습니다.
+```java
+public class Model {
+    private Map<Object,Object> model;
+
+    public Model() {
+        this.model = new HashMap<>();
+    }
+
+    public void addAttribute(Object key, Object value){
+        model.put(key,value);
+    }
+
+    public Map<Object, Object> getModel() {
+        return model;
+    }
+}
+```
+addAttribute() 메서드를 구현하여 모델 객체에 데이터를 담을 수 있고,
+getModel() 메서드를 통해 모델의 데이터를 가져 올 수 있습니다.
+---
+#### Controller
+컨트롤러 객체는 중간의 중계자 역할을 하도록 구현하였습니다.  
+  
+
+중간에서 중계자 역할을 하기 위해서는 필요한 객체를 의존하고 있어야합니다. 그렇기 때문에 생성자 주입을 통하여 의존성을 주입하였습니다.
+```java
+public class ChristmasPromotionController {
+
+  private InputView inputView;
+  private OutputView outputView;
+  private ValidationService validationService;
+  private EventService eventService;
+
+  public ChristmasPromotionController() {
+    this.inputView = new InputView();
+    this.outputView = new OutputView();
+    this.validationService = new ValidationServiceImpl();
+    this.eventService = new EventServiceImpl();
+  }
+}
+```
+---
+#### DTO(Data Transfer Object)
+엔티티와 DTO는 엄연히 서로 다른 관심사를 가지고 있고, 그렇기 때문에 분리하여 사용하기로 하였습니다.
+DTO 객체의 관심사는 계층간에 데이터를 전달하는 역할을 하도록 구현하였다.  
+
+DTO의 정의는 **" DTO는 어떠한 비즈니스 로직을 가져서는 안되며, 저장, 검색, 직렬화, 역직렬화 로직만을 가져야 한다고 한다."** 라고 한다.
+```java
+public class ReservationInfoDto {
+    private int reservationDay;
+    private Map<Menu, Integer> reservationMenusQuantity;
+    private int totalPriceBeforeDiscount;
+    private int totalDiscountPrice;
+    private Map<BenefitsTitle, Integer> benefitsDetails;
+    private Map<String, Integer> giveaway;
+    private String badge;
+
+    public ReservationInfoDto(String reservationDay, String reservationMenuAndQuantity) {
+      ...
+    }
+
+    private void initReservationMenusQuantity(String reservationMenuAndQuantity) {
+      ...
+    }
+
+    private void initTotalPriceBeforeDiscount() {
+      ...
+    }
+
+    public int getTotalPriceBeforeDiscount() {
+        return totalPriceBeforeDiscount;
+    }
+
+    public int getQuantityOf(String menuName) {
+        return reservationMenusQuantity.get(Menu.getMenu(menuName));
+    }
+
+    public int getReservationDay() {
+        return reservationDay;
+    }
+
+    public int getTotalPriceAfterDiscount() {
+        return totalPriceBeforeDiscount - totalDiscountPrice;
+    }
+
+    public int getTotalDiscountPrice() {
+        return totalDiscountPrice;
+    }
+
+    public String getBadge() {
+        return badge;
+    }
+
+    public Map<String, Integer> getGiveaway() {
+        return giveaway;
+    }
+
+    public Map<Menu, Integer> getReservationMenusQuantity() {
+        return reservationMenusQuantity;
+    }
+
+    public void setBadge(String badge) {
+        this.badge = badge;
+    }
+
+    public void applyGiveaway(BenefitsTitle discountTitle, Menu menu, int quantity) {
+      ...
+    }
+
+    public void applyDiscountPrice(BenefitsTitle discountTitle, int discountPrice) {
+      ...
+    }
+
+    public ReservationInfo toEntity() {
+        return new ReservationInfo(
+                reservationDay,
+                reservationMenusQuantity,
+                thousandUnitsComma(totalPriceBeforeDiscount),
+                thousandUnitsComma(getTotalPriceAfterDiscount()),
+                thousandUnitsComma(totalDiscountPrice),
+                thousandUnitsComma(getTotalBenefitsPrice()),
+                benefitsPriceOfBenefitsDetailsConvertThousandUnits(benefitsDetails),
+                giveaway,
+                badge
+        );
+    }
+
+    private String thousandUnitsComma(int number) {
+      ...
+    }
+
+    private Map<BenefitsTitle, String> benefitsPriceOfBenefitsDetailsConvertThousandUnits(Map<BenefitsTitle, Integer> benefitsDetails) {
+      ...
+    }
+
+    public int getTotalBenefitsPrice() {
+      ...
+    }
+}
+```
+toEntity 메서드를 구현하여 Entity를 생성하여 도메인 객체의 데이터를 보호하기 위해서 구현하였습니다.
+
+---
+#### Domain(Entity)
+엔티티는 핵심 비지니스 로직을 담는 비지니스 도메인의 영역의 일부이다.
+DTO 데이터를 기반으로 생성된 Entity로 Model객체를 초기화하는 역할을 하도록 구현하였습니다.
+
+```java
+public class ReservationInfo {
+    private int reservationDay;
+    private Map<Menu, Integer> reservationMenusQuantity;
+    private String totalPriceBeforeDiscount;
+    private String totalPriceAfterDiscount;
+    private String totalDiscountPrice;
+    private String totalBenefitsPrice;
+    private Map<BenefitsTitle, String> benefitsDetails;
+    private Map<String, Integer> giveaway;
+    private String badge;
+
+
+    public ReservationInfo(int reservationDay, Map<Menu, Integer> reservationMenusQuantity, String totalPriceBeforeDiscount, String totalPriceAfterDiscount, String totalDiscountPrice, String totalBenefitsPrice, Map<BenefitsTitle, String> benefitsDetails, Map<String, Integer> giveaway, String badge) {
+        this.reservationDay = reservationDay;
+        this.reservationMenusQuantity = reservationMenusQuantity;
+        this.totalPriceBeforeDiscount = totalPriceBeforeDiscount;
+        this.totalPriceAfterDiscount = totalPriceAfterDiscount;
+        this.totalDiscountPrice = totalDiscountPrice;
+        this.totalBenefitsPrice = totalBenefitsPrice;
+        this.benefitsDetails = benefitsDetails;
+        this.giveaway = giveaway;
+        this.badge = badge;
+    }
+
+    public Model toEventBenefitsPreviewModel() {
+        final String PREVIEW_MESSAGE = "12월 " + reservationDay + "일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!";
+        Model model = new Model();
+        model.addAttribute("preview", PREVIEW_MESSAGE);
+        return model;
+    }
+
+    public Model toOrderMenuModel() {
+        Model model = new Model();
+        reservationMenusQuantity.forEach((menu, quantity) -> {
+            model.addAttribute(menu.getName(), quantity);
+        });
+        return model;
+    }
+
+    public Model toTotalPriceBeforeDiscountModel() {
+        Model model = new Model();
+        model.addAttribute("totalPriceBeforeDiscount", totalPriceBeforeDiscount);
+        return model;
+    }
+
+    public Model toGiveawayModel() {
+        Model model = new Model();
+        giveaway.forEach((giveaway, quantity) -> {
+            model.addAttribute("giveaway", giveaway);
+            model.addAttribute("quantity", quantity);
+        });
+        return model;
+    }
+
+    public Model toBenefitsDetailsModel() {
+        Model model = new Model();
+        benefitsDetails.forEach((benefitsTitle, benefitsPrice) -> {
+            model.addAttribute(benefitsTitle.getTitle(), benefitsPrice);
+        });
+        return model;
+    }
+
+    public Model toTotalBenefitsPriceModel() {
+        Model model = new Model();
+        model.addAttribute("totalBenefitsPrice", totalBenefitsPrice);
+        return model;
+    }
+
+    public Model toTotalPriceAfterDiscountModel() {
+        Model model = new Model();
+        model.addAttribute("totalPriceAfterDiscount", totalPriceAfterDiscount);
+        return model;
+    }
+
+    public Model toBadgeModel() {
+        Model model = new Model();
+        model.addAttribute("badge", badge);
+        return model;
+    }
+
+}
+```
+Entity는 핵심 비지니스 로직을 담당하기 때문에 데이터가 변경되면 위험하다.  
+그렇기 때문에 getter/setter를 사용하지 않아 외부에서 데이터 접근을 막아 데이터를 보호하고 캡슐화 하였습니다.  
+객체에게 메세지를 던지도록 하여 객체스럽게 사용하도록 하였습니다.
+---
+### MVC 디자인 패턴을 사용한 이유는?
+MVC 패턴을 사용하는 이유는 **"서로 분리되어 각자의 역할에 집중할 수 있게끔 개발을 하고 애플리케이션을 만든다면, 유지보수성과 애플리케이션의 확장성 그리고 유연성이 증가하고 코드를 재사용함으로써 중복 코딩이라는 문제점 또한 사라지게 된다."** 이라고 한다.  
+
+하지만 막상 마음에는 확 와닫지 않았다.  
+분리?, 역할에 집중?, 유지보수성?  
+이러한 것을 이해하지 못하고 그냥 최대한 객체들의 역할을 분리하는데 집중하며 개발하였습니다.  
+개발을 끝내고 최종적으로 테스트를 진행했을 때 증정이벤트의 값이 예상과 다르게 나오는 것을 확인하였습니다.  
+그리고 생각하였습니다.  
+증정이벤트에서 데이터가 이상하네? 그러면 증정이벤트를 핸들링하는 객체는  EventService잖아 EventService에 가보자  
+그리고 데이터를 핸들링하는 객체는 ReservationDto잖아 가보자
+
+어!?!?  
+
+여기에 이러한 조건이 빠져있어서 데이터가 잘못 저장되었구나!!!  
+
+테스트가 실패하고 오류가 난 부분을 발견하고 수정하는 시간이 총 10분도 안걸렸습니다.
+
+이때 분리, 역할에 집중, 유지보수성 이라는 단어가 어떤 의미를 하는지 깨달았습니다.  
+이것 때문에 MVC 디자인 패턴을 사용하고 역할을 분리하는 것인지 이해하였습니다.  
+하지만 개발을 하다보면 역할이 명확한 경우도 있지만 애매한 경우도 많이 생기곤 합니다.  
+예를 들어 이벤트를 서비스에 구현하는게 맞을까? 이벤트 객체를 따로 구현하여 관리할까? 등...  
+이러한 부분은 많은 경험을 통해 배워야 한다고 생각합니다.  
+그렇기 때문에 앞으로 많은 경험을 하며 역할을 분리하는 능력을 학습 할 것입니다.
+---
+### 인터페이스는 왜 사용할까?
+```java
+public interface EventService {
+    public ReservationInfoDto applyDecemberEvent(ReservationInfoDto reservationInfoDto);
+
+}
+```
+EventService를 인터페이스를 활용하여 구현하였습니다.  
+이번 미션에서는 인터페이스를 활용하지 않아도 되지만 학습을 위해 활용하였습니다.  
+인터페이스를 활용하여 틀을 잡아 놓을 수 있어 개발 시적전에 추상화하여 생각해 볼 수 있었습니다.  
+만약 1월부터 12월까지 이벤트가 있었다면 이벤트들을 추상화하여 생각해 보고 구현 할 수 있었을 것입니다.  
+이벤트 내용이 변경된다고하면 인터페이스의 다형성과 유연성 특징 때문에으로 변경된 내용의 인터페이스를 구현하여 교환할수 있습니다.  
+단위 테스트를 할 때도 구현체를 교환해가며 테스트를 할 수 있었습니다.  
+
+---
+### TDD가 무조건 맞는 개발 방식인가?
+3주차 미션을 하고 4주차 미션에서 TDD개발 방식으로 개발해보자고 목표하였다.  
+아직 TDD 개발 방법론에 대해 깊게 공부하지 못한 상태였지만,  
+우선 테스트코드 먼저 작성하고 그걸 기반으로 기능을 구현하자고 생각하여 진행햐였다.
+그렇게 개발을 하다가 실제 코드의 예외를 테스트 코드에서 구현해야하는 어려움이 생겨서 구조를 변경하거나 우회하는 방법을
+찾는 시간이 꽤나 걸렸고, 개발속도가 앞으로 나아가지 않았다.  
+차라리 구현코드를 먼저 설계하고 테스트 코드로 검증하는 방법이 더욱 빠르지 않을까 하는 생각이 계속 들었다.  
+TDD는 최종 결과로 가는 방법중 하나일 뿐이다.
+TDD 개발 방법론이 맞다고 고집하다가는 우리의 목표의 최종 결과로 도달하지 못 할 수도 있다.  
+TDD 개발 방법론을 고집하지 않고, TDD 개발 방법론을 더욱 깊이 공부하여 필요한 상황에 적절하게 적용하고 싶다.
+
+## ✏️ 학습내용
+* MVC 다자인 패턴의 사용 이유
+* 관심사와 역할 객체 분리 
+* 인터페이스 사용법
+* 추상클래스 사용법
+* TDD 개발방법만이 옳지 않다
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
