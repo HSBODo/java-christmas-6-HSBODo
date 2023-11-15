@@ -62,9 +62,9 @@ public class ChristmasPromotionController {
     }
 
     private void firstGreetingModelAndView(){
-        final String FIRST_GREETING = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
+        final String FIRST_GREETING_MESSAGE  = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
         Model model = new Model();
-        model.addAttribute("firstGreeting",FIRST_GREETING);
+        model.addAttribute("firstGreeting",FIRST_GREETING_MESSAGE );
         outputView.firstGreeting(model);
     }
 

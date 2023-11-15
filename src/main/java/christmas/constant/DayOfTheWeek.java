@@ -13,7 +13,7 @@ public enum DayOfTheWeek {
     토요일(6,"주말"),
     일요일(7,"평일")
     ;
-    private static final int DAYOFTHEWEEK_INDEX = 0;
+    private static final int DAY_OF_THE_WEEK_INDEX = 0;
 
     final private int value;
     final private String category;
@@ -28,7 +28,7 @@ public enum DayOfTheWeek {
                 .filter(dayOfTheWeek ->
                         dayOfTheWeek.getValue() == dayOfWeek)
                 .collect(Collectors.toList());
-        return DayOfTheWeeks.get(DAYOFTHEWEEK_INDEX);
+        return DayOfTheWeeks.get(DAY_OF_THE_WEEK_INDEX);
     }
 
     public int getValue(){

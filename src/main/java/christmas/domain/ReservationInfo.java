@@ -31,9 +31,9 @@ public class ReservationInfo {
     }
 
     public Model toEventBenefitsPreviewModel(){
-        final String PREVIEW = "12월 "+reservationDay+"일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!";
+        final String PREVIEW_MESSAGE = "12월 "+reservationDay+"일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!";
         Model model = new Model();
-        model.addAttribute("preview",PREVIEW);
+        model.addAttribute("preview",PREVIEW_MESSAGE);
         return model;
     }
 
