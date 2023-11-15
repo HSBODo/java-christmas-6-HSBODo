@@ -598,6 +598,60 @@ public interface EventService {
 단위 테스트를 할 때도 구현체를 교환해가며 테스트를 할 수 있었습니다.  
 
 ---
+### 추상클래스는 왜 사용할까?
+이번 미션의 요구사항중 할인 이벤트가 있습니다.  
+크리스마스 디데이 할인, 평일 할인, 주말 할인, 특별 할인, 증정 이벤트, 배지 이벤트 등...  
+이러한 여러 이벤트의 공통 요소인 이벤트 제목, 이벤트적용하기를 중복 멤버를 통합하여 공통 멤버로 추상화 하였습니다.
+```java
+public abstract class Event {
+    public BenefitsTitle benefitsTitle;
+
+    public abstract void apply(ReservationInfoDto reservationInfoDto);
+}
+```
+```java
+public class ChristmasDdayDiscount extends Event {
+    private final int ONE_DAY_PER_DISCOUNT_PRICE;
+    private int minDiscountPrice;
+  
+    public ChristmasDdayDiscount() {
+        this.benefitsTitle = BenefitsTitle.크리스마스_디데이_할인;
+        this.ONE_DAY_PER_DISCOUNT_PRICE = 100;
+        this.minDiscountPrice = 1000;
+    }
+  
+    @Override
+    public void apply(ReservationInfoDto reservationInfoDto) {
+        int reservationDay = reservationInfoDto.getReservationDay();
+        int discountPrice = minDiscountPrice + ((reservationDay - 1) * ONE_DAY_PER_DISCOUNT_PRICE);
+        reservationInfoDto.applyDiscountPrice(benefitsTitle, discountPrice);
+    }
+}
+```
+Event 추상클래스를 상속받아 공통 멤버를 구현하였습니다.  
+다형성을 활용하여 apply() 메서드가 각각 할인에 맞게 다른 내용으로 구현하였습니다.
+
+```java
+public class ThanksgivingDayDiscount extends Event {
+    private final int ONE_DAY_PER_DISCOUNT_PRICE;
+    private int minDiscountPrice;
+  
+    public ChristmasDdayDiscount() {
+        this.benefitsTitle = BenefitsTitle.추석_할인;
+        this.ONE_DAY_PER_DISCOUNT_PRICE = 100;
+        this.minDiscountPrice = 1000;
+    }
+  
+    @Override
+    public void apply(ReservationInfoDto reservationInfoDto) {
+        추석할인 적용 내용 ...
+    }
+}
+
+```
+다른 이벤트가 추가되어도 Event를 상속받아 apply() 메서드를 이벤트에 맞게 구현 하여 확장 할 수 있었습니다.
+
+---
 ### TDD가 무조건 맞는 개발 방식인가?
 3주차 미션을 하고 4주차 미션에서 TDD개발 방식으로 개발해보자고 목표하였다.  
 아직 TDD 개발 방법론에 대해 깊게 공부하지 못한 상태였지만,  
