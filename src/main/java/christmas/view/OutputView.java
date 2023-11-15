@@ -27,21 +27,21 @@ public class OutputView {
     public void orderMenu(Model model){
         System.out.println(ORDER_MENU_TITLE);
         model.getModel().forEach((menuName, quantity) ->{
-            System.out.println(menuName+" "+quantity+UNIT);
+            System.out.println(menuName + " " + quantity + UNIT);
         });
         System.out.println();
     }
     
     public void totalPriceBeforeDiscount(Model model){
         System.out.println(TOTAL_PRICE_BEFORE_DISCOUNT_TITLE);
-        System.out.println(model.getModel().get("totalPriceBeforeDiscount")+WON);
+        System.out.println(model.getModel().get("totalPriceBeforeDiscount") + WON);
         System.out.println();
     }
 
     public void giveaway(Model model){
         String giveaway = EMPTY;
         if(model.getModel().get("giveaway")!=EMPTY){
-            giveaway = model.getModel().get("giveaway")+" "+(model.getModel().get("quantity")+UNIT);
+            giveaway = model.getModel().get("giveaway") + " " + (model.getModel().get("quantity") + UNIT);
         }
         System.out.println(GIVEAWAY_TITLE);
         System.out.println(giveaway);
@@ -52,20 +52,20 @@ public class OutputView {
         System.out.println(BENEFITS_DETAILS_TITLE);
         if(model.getModel().size()==0) System.out.println(EMPTY);
         model.getModel().forEach((discountTitle, discountPrice) -> {
-            System.out.println(discountTitle+": "+discountPrice+WON);
+            System.out.println(discountTitle + ": " + discountPrice + WON);
         });
         System.out.println();
     }
 
     public void totalBenefitsPrice(Model model){
         System.out.println(TOTAL_BENEFITS_PRICE_TITLE);
-        System.out.println(model.getModel().get("totalBenefitsPrice")+WON);
+        System.out.println(model.getModel().get("totalBenefitsPrice") + WON);
         System.out.println();
     }
 
     public void totalPriceAfterDiscount(Model model){
         System.out.println(TOTAL_PRICE_AFTER_DISCOUNT_TITLE);
-        System.out.println(model.getModel().get("totalPriceAfterDiscount")+WON);
+        System.out.println(model.getModel().get("totalPriceAfterDiscount") + WON);
         System.out.println();
     }
 
