@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 public class ValidationServiceImpl implements ValidationService {
     private final int RESERVATION_DATE_RANGE_START = 1;
     private final int RESERVATION_DATE_RANGE_END = 31;
-    private final int RESERVATION_QUANTITY_RANGE_START = 1;
-    private final int RESERVATION_QUANTITY_RANGE_END = 20;
+    private final int RESERVATION_QUANTITY_RANGE_MIN = 1;
+    private final int RESERVATION_QUANTITY_RANGE_MAX = 20;
     private final String[] NECESSARY_INCLUDE_MENU={"디저트","메인","애피타이저"};
 
     @Override
@@ -22,7 +22,7 @@ public class ValidationServiceImpl implements ValidationService {
             isDigit(reservationDate);
             isRangeReservationDate(Integer.parseInt(reservationDate),RESERVATION_DATE_RANGE_START,RESERVATION_DATE_RANGE_END);
             return true;
-        }catch (Exception e){
+        }catch (IllegalArgumentException e){
             System.out.println(ChristmasPromotionException.INPUT_NOT_VALID_DATE.getMessage());
             return false;
         }
@@ -33,12 +33,12 @@ public class ValidationServiceImpl implements ValidationService {
         try {
             isFormat(reservationMenuAndQuantity);
             isDigitQuantity(reservationMenuAndQuantity);
-            isRangeQuantity(reservationMenuAndQuantity,RESERVATION_QUANTITY_RANGE_START,RESERVATION_QUANTITY_RANGE_END);
+            isRangeQuantity(reservationMenuAndQuantity,RESERVATION_QUANTITY_RANGE_MIN,RESERVATION_QUANTITY_RANGE_MAX);
             isMenu(reservationMenuAndQuantity);
             isDuplicationMenu(reservationMenuAndQuantity);
             isNotOnlyBeverage(reservationMenuAndQuantity);
             return true;
-        }catch (Exception e){
+        }catch (IllegalArgumentException e){
             System.out.println(ChristmasPromotionException.INPUT_NOT_VALID_MENU_QUANTITY.getMessage());
             return false;
         }
@@ -58,7 +58,8 @@ public class ValidationServiceImpl implements ValidationService {
             return true;
         }
 
-        throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
+        throw new IllegalArgumentException(
+                ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
     }
 
     private boolean isFormat(String reservationMenuAndQuantity){
@@ -84,19 +85,24 @@ public class ValidationServiceImpl implements ValidationService {
         return true;
     }
 
-    private boolean isRangeQuantity(String reservationMenuAndQuantity,int start, int end){
+    private boolean isRangeQuantity(String reservationMenuAndQuantity,int min, int max){
         String[] reservationMenuAndQuantityCommaSplit = stringSplitComma(reservationMenuAndQuantity);
         int totalQuantity = 0;
 
         for(String menuAndQuantity:reservationMenuAndQuantityCommaSplit){
             String[] menuAndQuantityHyphenSplit = stringSplitHyphen(menuAndQuantity);
             int quantity = Integer.parseInt(menuAndQuantityHyphenSplit[1]);
-            if(quantity < start || quantity > end){
+            if(quantity < min || quantity > max){
                 throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
             }
             totalQuantity += quantity;
         }
-        if(totalQuantity>end){
+
+        return isOverMaxQuantity(totalQuantity,max);
+    }
+
+    private boolean isOverMaxQuantity(int totalQuantity,int maxQuantity){
+        if(totalQuantity>maxQuantity){
             throw new IllegalArgumentException(ChristmasPromotionException.INPUT_NOT_VALID_RANGE.getMessage());
         }
         return true;
